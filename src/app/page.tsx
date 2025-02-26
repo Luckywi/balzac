@@ -6,9 +6,17 @@ import Link from "next/link";
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
+  const [isBrowser, setIsBrowser] = useState(false);
+
+  // Détecte si le code s'exécute dans le navigateur
+  useEffect(() => {
+    setIsBrowser(true);
+  }, []);
 
   // Gestion du défilement
   useEffect(() => {
+    if (!isBrowser) return;
+
     const handleScroll = () => {
       if (!containerRef.current) return;
       
@@ -23,10 +31,12 @@ export default function Home() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [isBrowser]);
 
   // Effet pour défiler vers la deuxième page lorsqu'on clique sur la flèche
   const scrollToSecondPage = () => {
+    if (!isBrowser) return;
+    
     window.scrollTo({
       top: window.innerHeight,
       behavior: "smooth"
@@ -34,14 +44,14 @@ export default function Home() {
   };
 
   // Calculer le pourcentage de défilement pour les animations
-  const scrollPercentage = Math.min(1, scrollPosition / window.innerHeight);
+  const scrollPercentage = isBrowser ? Math.min(1, scrollPosition / (typeof window !== 'undefined' ? window.innerHeight : 1)) : 0;
 
   return (
     <div 
       className="relative"
       ref={containerRef}
       style={{
-        height: "200vh", // Deux fois la hauteur de l'écran pour permettre le défilement
+        height: isBrowser ? "200vh" : "100vh", // Deux fois la hauteur de l'écran pour permettre le défilement
       }}
     >
       {/* Fond avec dégradé qui reste fixe */}
