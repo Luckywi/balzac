@@ -6,7 +6,6 @@ import Link from "next/link";
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrollPosition, setScrollPosition] = useState(0);
-  const [isSecondPageVisible, setIsSecondPageVisible] = useState(false);
 
   // Gestion du défilement
   useEffect(() => {
@@ -14,13 +13,9 @@ export default function Home() {
       if (!containerRef.current) return;
       
       const position = window.scrollY;
-      const windowHeight = window.innerHeight;
       
       // Mettre à jour la position de défilement
       setScrollPosition(position);
-      
-      // Déterminer si la deuxième page est visible
-      setIsSecondPageVisible(position > windowHeight * 0.3);
     };
 
     window.addEventListener("scroll", handleScroll);
