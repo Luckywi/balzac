@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -116,18 +117,18 @@ export default function Home() {
 
 
   // Calculer les styles pour l'animation de la première page
-const firstPageStyle = {
-  opacity: currentPage === 0 ? 1 : 0,
-  transform: currentPage === 0 ? 'translateY(0)' : 'translateY(-30px)',
-  pointerEvents: currentPage === 0 ? 'auto' : 'none' as const, // Ajouter "as const"
-};
+  const firstPageStyle = {
+    opacity: currentPage === 0 ? 1 : 0,
+    transform: currentPage === 0 ? 'translateY(0)' : 'translateY(-30px)',
+    pointerEvents: currentPage === 0 ? 'auto' : 'none' as const,
+  };
 
-// Calculer les styles pour l'animation de la deuxième page
-const secondPageStyle = {
-  opacity: currentPage === 1 ? 1 : 0,
-  transform: currentPage === 1 ? 'translateY(0)' : 'translateY(30px)',
-  pointerEvents: currentPage === 1 ? 'auto' : 'none' as const, // Ajouter "as const"
-};
+  // Calculer les styles pour l'animation de la deuxième page
+  const secondPageStyle = {
+    opacity: currentPage === 1 ? 1 : 0,
+    transform: currentPage === 1 ? 'translateY(0)' : 'translateY(30px)',
+    pointerEvents: currentPage === 1 ? 'auto' : 'none' as const,
+  };
 
   // Effet pour gérer l'événement de la molette
   useEffect(() => {
@@ -149,52 +150,76 @@ const secondPageStyle = {
   };
 
   return (
-    <div 
-      ref={containerRef}
-      className="relative overflow-hidden"
-      style={{ height: '100vh', touchAction: 'none' }}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
-    >
-      {/* Fond avec dégradé qui reste fixe */}
-      <div
-        className="fixed inset-0 z-0"
-        style={{
-          background: `linear-gradient(to bottom, #000000, #8A9A80)`,
+    <>
+      <Head>
+        {/* Meta tag pour gérer la barre d'état sur iOS */}
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+      </Head>
+      
+      <div 
+        ref={containerRef}
+        className="relative overflow-hidden"
+        style={{ 
+          height: '100vh', 
+          touchAction: 'none',
+          // Ajouter un padding pour la barre d'état sur iOS
+          paddingTop: 'env(safe-area-inset-top)'
         }}
-      />
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        {/* Fond avec dégradé qui reste fixe */}
+        <div
+          className="fixed inset-0 z-0"
+          style={{
+            background: `linear-gradient(to bottom, #000000, #8A9A80)`,
+          }}
+        />
 
-      {/* Première page - Informations du salon */}
-      <div
-  className="absolute inset-0 z-10 flex flex-col items-center justify-between px-4 py-12 overflow-hidden transition-all duration-500 ease-in-out"
-  style={{
-    ...firstPageStyle,
-    height: viewportHeight ? `${viewportHeight}px` : '100vh',
-    fontFamily: "var(--font-jetbrains-mono)",
-  } as React.CSSProperties}
->
-        <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto text-center text-white">
-          <h1 className="text-4xl font-medium mb-3">Le Balzac</h1>
-          
-          <p className="text-sm mb-1">
-            Salon de coiffure Homme et
-          </p>
-          <p className="text-sm mb-16">
-            Femme à Décines-Charpieux
-          </p>
-          
-          <Link
-            href="/rendez-vous"
-            className="border border-white rounded-full py-3 px-10 text-sm mb-16 hover:bg-white/10 transition-colors"
-          >
-            PRENDRE RDV
-          </Link>
-          
-          <div className="flex items-center justify-center mb-1">
-            {[1, 2, 3, 4].map((star) => (
+        {/* Première page - Informations du salon */}
+        <div
+          className="absolute inset-0 z-10 flex flex-col items-center justify-between px-4 py-12 overflow-hidden transition-all duration-500 ease-in-out"
+          style={{
+            ...firstPageStyle,
+            height: viewportHeight ? `${viewportHeight}px` : '100vh',
+            fontFamily: "var(--font-jetbrains-mono)",
+          } as React.CSSProperties}
+        >
+          <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto text-center text-white">
+            <h1 className="text-4xl font-medium mb-3">Le Balzac</h1>
+            
+            <p className="text-sm mb-1">
+              Salon de coiffure Homme et
+            </p>
+            <p className="text-sm mb-16">
+              Femme à Décines-Charpieux
+            </p>
+            
+            <Link
+              href="/rendez-vous"
+              className="border border-white rounded-full py-3 px-10 text-sm mb-16 hover:bg-white/10 transition-colors"
+            >
+              PRENDRE RDV
+            </Link>
+            
+            <div className="flex items-center justify-center mb-1">
+              {[1, 2, 3, 4].map((star) => (
+                <svg
+                  key={star}
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="white"
+                  className="mx-0.5"
+                >
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              ))}
               <svg
-                key={star}
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
@@ -203,85 +228,96 @@ const secondPageStyle = {
                 className="mx-0.5"
               >
                 <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  fill="black"
+                  opacity="0.5"
+                  clipPath="inset(0 50% 0 0)"
+                />
               </svg>
-            ))}
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="white"
-              className="mx-0.5"
-            >
-              <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-              <path
-                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                fill="black"
-                opacity="0.5"
-                clipPath="inset(0 50% 0 0)"
-              />
-            </svg>
+            </div>
+            
+            <p className="text-sm mb-2">(4.6)</p>
+            
+            <button className="text-xs underline">
+              Voir les 1090 avis
+            </button>
           </div>
           
-          <p className="text-sm mb-2">(4.6)</p>
-          
-          <button className="text-xs underline">
-            Voir les 1090 avis
-          </button>
-        </div>
-        
-        <div className="pb-8">
-          <button 
-            onClick={scrollToSecondPage}
-            className="animate-bounce focus:outline-none"
-            aria-label="Défiler vers le bas"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="32"
-              height="32"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="white"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
+          <div className="pb-8">
+            <button 
+              onClick={scrollToSecondPage}
+              className="animate-bounce focus:outline-none"
+              aria-label="Défiler vers le bas"
             >
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        {/* Deuxième page - Menu */}
+        <div
+          className="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 transition-all duration-500 ease-in-out"
+          style={{
+            ...secondPageStyle,
+            height: viewportHeight ? `${viewportHeight}px` : '100vh',
+            fontFamily: "var(--font-jetbrains-mono)",
+          } as React.CSSProperties}
+        >
+          <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto gap-6">
+            {[
+              { name: "PRENDRE RDV", href: "/rendez-vous" },
+              { name: "PRESTATIONS", href: "/prestations" },
+              { name: "L'ÉQUIPE", href: "/equipe" },
+              { name: "LES AVIS", href: "/avis" },
+              { name: "ACCÈS", href: "/acces" },
+            ].map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="border border-white rounded-full py-3 px-10 w-full max-w-xs text-center text-white hover:bg-white/10 transition-colors"
+                prefetch={true}
+              >
+                {item.name}
+              </Link>
+            ))}
+            
+            {/* Bouton pour remonter vers la première page */}
+            <button 
+              onClick={() => changePage(0)}
+              className="mt-8 focus:outline-none"
+              aria-label="Retour à l'accueil"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="transform rotate-180"
+              >
+                <polyline points="6 9 12 15 18 9"></polyline>
+              </svg>
+            </button>
+          </div>
         </div>
       </div>
-
-      {/* Deuxième page - Menu */}
-      <div
-  className="absolute inset-0 z-10 flex flex-col items-center justify-between px-4 py-12 overflow-hidden transition-all duration-500 ease-in-out"
-  style={{
-    ...secondPageStyle,
-    height: viewportHeight ? `${viewportHeight}px` : '100vh',
-    fontFamily: "var(--font-jetbrains-mono)",
-  } as React.CSSProperties}
->
-        <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto gap-4">
-          {[
-            { name: "PRENDRE RDV", href: "/rendez-vous" },
-            { name: "PRESTATIONS", href: "/prestations" },
-            { name: "L'ÉQUIPE", href: "/equipe" },
-            { name: "LES AVIS", href: "/avis" },
-            { name: "ACCÈS", href: "/acces" },
-          ].map((item) => (
-            <Link
-              key={item.name}
-              href={item.href}
-              className="border border-white rounded-full py-3 px-10 w-full max-w-xs text-center text-white hover:bg-white/10 transition-colors"
-              prefetch={true}
-            >
-              {item.name}
-            </Link>
-          ))}
-
-        </div>
-      </div>
-    </div>
+    </>
   );
 }
