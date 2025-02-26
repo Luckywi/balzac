@@ -114,6 +114,21 @@ export default function Home() {
     }
   }, [currentPage, changePage, isTransitioning]);
 
+
+  // Calculer les styles pour l'animation de la première page
+const firstPageStyle = {
+  opacity: currentPage === 0 ? 1 : 0,
+  transform: currentPage === 0 ? 'translateY(0)' : 'translateY(-30px)',
+  pointerEvents: currentPage === 0 ? 'auto' : 'none' as const, // Ajouter "as const"
+};
+
+// Calculer les styles pour l'animation de la deuxième page
+const secondPageStyle = {
+  opacity: currentPage === 1 ? 1 : 0,
+  transform: currentPage === 1 ? 'translateY(0)' : 'translateY(30px)',
+  pointerEvents: currentPage === 1 ? 'auto' : 'none' as const, // Ajouter "as const"
+};
+
   // Effet pour gérer l'événement de la molette
   useEffect(() => {
     const container = containerRef.current;
@@ -131,20 +146,6 @@ export default function Home() {
   // Fonction pour défiler vers la deuxième page
   const scrollToSecondPage = () => {
     changePage(1);
-  };
-
-  // Calculer les styles pour l'animation de la première page
-  const firstPageStyle = {
-    opacity: currentPage === 0 ? 1 : 0,
-    transform: currentPage === 0 ? 'translateY(0)' : 'translateY(-30px)',
-    pointerEvents: currentPage === 0 ? 'auto' : 'none',
-  };
-
-  // Calculer les styles pour l'animation de la deuxième page
-  const secondPageStyle = {
-    opacity: currentPage === 1 ? 1 : 0,
-    transform: currentPage === 1 ? 'translateY(0)' : 'translateY(30px)',
-    pointerEvents: currentPage === 1 ? 'auto' : 'none',
   };
 
   return (
@@ -166,13 +167,13 @@ export default function Home() {
 
       {/* Première page - Informations du salon */}
       <div
-        className="absolute inset-0 z-10 flex flex-col items-center justify-between px-4 py-12 overflow-hidden transition-all duration-500 ease-in-out"
-        style={{
-          ...firstPageStyle,
-          height: viewportHeight ? `${viewportHeight}px` : '100vh',
-          fontFamily: "var(--font-jetbrains-mono)",
-        }}
-      >
+  className="absolute inset-0 z-10 flex flex-col items-center justify-between px-4 py-12 overflow-hidden transition-all duration-500 ease-in-out"
+  style={{
+    ...firstPageStyle,
+    height: viewportHeight ? `${viewportHeight}px` : '100vh',
+    fontFamily: "var(--font-jetbrains-mono)",
+  } as React.CSSProperties}
+>
         <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto text-center text-white">
           <h1 className="text-4xl font-medium mb-3">Le Balzac</h1>
           
@@ -254,13 +255,13 @@ export default function Home() {
 
       {/* Deuxième page - Menu */}
       <div
-        className="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 transition-all duration-500 ease-in-out"
-        style={{
-          ...secondPageStyle,
-          height: viewportHeight ? `${viewportHeight}px` : '100vh',
-          fontFamily: "var(--font-jetbrains-mono)",
-        }}
-      >
+  className="absolute inset-0 z-10 flex flex-col items-center justify-between px-4 py-12 overflow-hidden transition-all duration-500 ease-in-out"
+  style={{
+    ...secondPageStyle,
+    height: viewportHeight ? `${viewportHeight}px` : '100vh',
+    fontFamily: "var(--font-jetbrains-mono)",
+  } as React.CSSProperties}
+>
         <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto gap-4">
           {[
             { name: "PRENDRE RDV", href: "/rendez-vous" },
