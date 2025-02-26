@@ -16,36 +16,62 @@ export default function Home() {
   const minSwipeDistance = 50;
 
   // Effet pour initialiser la hauteur de la fenêtre et écouter les changements
-  useEffect(() => {
-    // Définir la hauteur de viewport initiale (évite les calculs incorrects au montage)
-    const calculateViewportHeight = () => {
-      // On utilise window.innerHeight pour obtenir la hauteur visuelle réelle
-      const vh = window.innerHeight;
-      setViewportHeight(vh);
+  // Effet pour initialiser la hauteur de la fenêtre et écouter les changements
+useEffect(() => {
+  // Définir la hauteur de viewport initiale (évite les calculs incorrects au montage)
+  const calculateViewportHeight = () => {
+    // On utilise window.innerHeight pour obtenir la hauteur visuelle réelle
+    const vh = window.innerHeight;
+    setViewportHeight(vh);
+    
+    // Applique une variable CSS pour les hauteurs relatives
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+  };
+
+  // Calcul initial
+  calculateViewportHeight();
+
+  // Recalculer à chaque redimensionnement ou changement d'orientation
+  window.addEventListener('resize', calculateViewportHeight);
+  window.addEventListener('orientationchange', calculateViewportHeight);
+
+  // Éviter les oscillations du viewport sur iOS en désactivant le zoom automatique
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 1) {
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  // Solution spécifique pour iOS
+  if (typeof window !== 'undefined') {
+    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+    
+    if (iOS) {
+      // Définir la couleur de fond pour la barre d'état
+      document.body.style.setProperty('background-color', '#000000');
+      document.documentElement.style.setProperty('background-color', '#000000');
       
-      // Applique une variable CSS pour les hauteurs relatives
-      document.documentElement.style.setProperty('--vh', `${vh}px`);
-    };
-
-    // Calcul initial
-    calculateViewportHeight();
-
-    // Recalculer à chaque redimensionnement ou changement d'orientation
-    window.addEventListener('resize', calculateViewportHeight);
-    window.addEventListener('orientationchange', calculateViewportHeight);
-
-    // Éviter les oscillations du viewport sur iOS en désactivant le zoom automatique
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches.length > 1) {
-        e.preventDefault();
+      // Force le rendu de la barre d'état par un léger scroll
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
+      
+      // Ajouter la classe pour le mode iOS
+      document.documentElement.classList.add('ios-device');
+      
+      // Gérer l'interface en plein écran
+      if (navigator.standalone) {
+        document.documentElement.classList.add('ios-standalone');
       }
-    }, { passive: false });
+    }
+  }
 
-    return () => {
-      window.removeEventListener('resize', calculateViewportHeight);
-      window.removeEventListener('orientationchange', calculateViewportHeight);
-    };
-  }, []);
+  return () => {
+    window.removeEventListener('resize', calculateViewportHeight);
+    window.removeEventListener('orientationchange', calculateViewportHeight);
+  };
+}, []);
 
   // Gestionnaire du toucher initial
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -160,7 +186,7 @@ export default function Home() {
       
       <div 
         ref={containerRef}
-        className="relative overflow-hidden"
+        className="relative overflow-hidden safe-area-top"
         style={{ 
           height: '100vh', 
           touchAction: 'none',
@@ -295,26 +321,6 @@ export default function Home() {
             ))}
             
             {/* Bouton pour remonter vers la première page */}
-            <button 
-              onClick={() => changePage(0)}
-              className="mt-8 focus:outline-none"
-              aria-label="Retour à l'accueil"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="32"
-                height="32"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="white"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="transform rotate-180"
-              >
-                <polyline points="6 9 12 15 18 9"></polyline>
-              </svg>
-            </button>
           </div>
         </div>
       </div>

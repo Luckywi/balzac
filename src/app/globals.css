@@ -67,3 +67,55 @@ body {
   transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
   transition-duration: 300ms;
 }
+
+/* À ajouter dans globals.css */
+
+/* Correction pour safari iOS */
+@supports (-webkit-touch-callout: none) {
+  body {
+    /* Couleur de fond pour la barre d'état */
+    background-color: #000000; 
+  }
+  
+  /* Remplir l'espace sous la barre d'état */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
+/* Empêcher le comportement de rebond sur iOS */
+html, body {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Styles spécifiques pour iOS */
+.ios-device {
+  /* Empêcher le comportement de rebond sur iOS */
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ios-standalone {
+  /* Styles pour le mode plein écran quand ajouté à l'écran d'accueil */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Couleur de fond de la barre d'état même en mode défilement */
+@supports (-webkit-touch-callout: none) {
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: env(safe-area-inset-top);
+    background-color: #000000;
+    z-index: 9999;
+  }
+}
