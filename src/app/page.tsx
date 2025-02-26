@@ -1,62 +1,164 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const [isBrowser, setIsBrowser] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState(0);
 
-  // Détecte si le code s'exécute dans le navigateur
+  // Minimum swipe distance (en px) requis pour déclencher un changement de page
+  const minSwipeDistance = 50;
+
+  // Effet pour initialiser la hauteur de la fenêtre et écouter les changements
   useEffect(() => {
-    setIsBrowser(true);
+    // Définir la hauteur de viewport initiale (évite les calculs incorrects au montage)
+    const calculateViewportHeight = () => {
+      // On utilise window.innerHeight pour obtenir la hauteur visuelle réelle
+      const vh = window.innerHeight;
+      setViewportHeight(vh);
+      
+      // Applique une variable CSS pour les hauteurs relatives
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    // Calcul initial
+    calculateViewportHeight();
+
+    // Recalculer à chaque redimensionnement ou changement d'orientation
+    window.addEventListener('resize', calculateViewportHeight);
+    window.addEventListener('orientationchange', calculateViewportHeight);
+
+    // Éviter les oscillations du viewport sur iOS en désactivant le zoom automatique
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    return () => {
+      window.removeEventListener('resize', calculateViewportHeight);
+      window.removeEventListener('orientationchange', calculateViewportHeight);
+    };
   }, []);
 
-  // Gestion du défilement
-  useEffect(() => {
-    if (!isBrowser) return;
-
-    const handleScroll = () => {
-      if (!containerRef.current) return;
-      
-      const position = window.scrollY;
-      
-      // Mettre à jour la position de défilement
-      setScrollPosition(position);
-    };
-
-    window.addEventListener("scroll", handleScroll);
-    
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [isBrowser]);
-
-  // Effet pour défiler vers la deuxième page lorsqu'on clique sur la flèche
-  const scrollToSecondPage = () => {
-    if (!isBrowser) return;
-    
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: "smooth"
-    });
+  // Gestionnaire du toucher initial
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientY);
+    setTouchEnd(null);
   };
 
-  // Calculer le pourcentage de défilement pour les animations
-  const scrollPercentage = isBrowser ? Math.min(1, scrollPosition / (typeof window !== 'undefined' ? window.innerHeight : 1)) : 0;
+  // Gestionnaire du toucher final
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientY);
+  };
+
+  // Gestionnaire de swipe
+  const handleTouchEnd = useCallback(() => {
+    if (!touchStart || !touchEnd) return;
+    
+    // Calcul de la distance de swipe
+    const distance = touchStart - touchEnd;
+    const isSwipeDown = distance < 0;
+    const isSwipeUp = distance > 0;
+    const absDistance = Math.abs(distance);
+    
+    // Si la transition est déjà en cours, on ignore le swipe
+    if (isTransitioning) return;
+
+    // Si la distance de swipe est suffisante
+    if (absDistance > minSwipeDistance) {
+      if (isSwipeUp && currentPage === 0) {
+        // Swipe vers le haut depuis la première page
+        changePage(1);
+      } else if (isSwipeDown && currentPage === 1) {
+        // Swipe vers le bas depuis la deuxième page
+        changePage(0);
+      }
+    }
+    
+    // Réinitialiser les valeurs de toucher
+    setTouchStart(null);
+    setTouchEnd(null);
+  }, [touchStart, touchEnd, currentPage, isTransitioning]);
+
+  // Fonction pour changer de page avec animation
+  const changePage = useCallback((pageIndex: number) => {
+    if (isTransitioning) return;
+    
+    setIsTransitioning(true);
+    setCurrentPage(pageIndex);
+    
+    // Réinitialiser l'état de transition après l'animation
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 600); // Correspond à la durée de transition CSS (500ms + marge)
+  }, [isTransitioning]);
+
+  // Gestionnaire de la molette de souris (pour desktop)
+  const handleWheel = useCallback((e: WheelEvent) => {
+    e.preventDefault();
+    
+    if (isTransitioning) return;
+    
+    if (e.deltaY > 0 && currentPage === 0) {
+      // Défilement vers le bas
+      changePage(1);
+    } else if (e.deltaY < 0 && currentPage === 1) {
+      // Défilement vers le haut
+      changePage(0);
+    }
+  }, [currentPage, changePage, isTransitioning]);
+
+  // Effet pour gérer l'événement de la molette
+  useEffect(() => {
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener('wheel', handleWheel, { passive: false });
+    }
+    
+    return () => {
+      if (container) {
+        container.removeEventListener('wheel', handleWheel);
+      }
+    };
+  }, [handleWheel]);
+
+  // Fonction pour défiler vers la deuxième page
+  const scrollToSecondPage = () => {
+    changePage(1);
+  };
+
+  // Calculer les styles pour l'animation de la première page
+  const firstPageStyle = {
+    opacity: currentPage === 0 ? 1 : 0,
+    transform: currentPage === 0 ? 'translateY(0)' : 'translateY(-30px)',
+    pointerEvents: currentPage === 0 ? 'auto' : 'none',
+  };
+
+  // Calculer les styles pour l'animation de la deuxième page
+  const secondPageStyle = {
+    opacity: currentPage === 1 ? 1 : 0,
+    transform: currentPage === 1 ? 'translateY(0)' : 'translateY(30px)',
+    pointerEvents: currentPage === 1 ? 'auto' : 'none',
+  };
 
   return (
     <div 
-      className="relative"
       ref={containerRef}
-      style={{
-        height: isBrowser ? "200vh" : "100vh", // Deux fois la hauteur de l'écran pour permettre le défilement
-      }}
+      className="relative overflow-hidden"
+      style={{ height: '100vh', touchAction: 'none' }}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
     >
       {/* Fond avec dégradé qui reste fixe */}
       <div
-        className="fixed inset-0 z-0 transition-all duration-300"
+        className="fixed inset-0 z-0"
         style={{
           background: `linear-gradient(to bottom, #000000, #8A9A80)`,
         }}
@@ -64,11 +166,10 @@ export default function Home() {
 
       {/* Première page - Informations du salon */}
       <div
-        className="fixed inset-0 z-10 flex flex-col items-center justify-between px-4 py-12 overflow-fix"
+        className="absolute inset-0 z-10 flex flex-col items-center justify-between px-4 py-12 overflow-hidden transition-all duration-500 ease-in-out"
         style={{
-          opacity: 1 - scrollPercentage * 1.2, // Disparaît progressivement
-          transform: `translateY(${scrollPercentage * -30}px)`, // Léger effet de parallaxe
-          pointerEvents: scrollPercentage > 0.8 ? "none" : "auto", // Désactiver les interactions quand presque invisible
+          ...firstPageStyle,
+          height: viewportHeight ? `${viewportHeight}px` : '100vh',
           fontFamily: "var(--font-jetbrains-mono)",
         }}
       >
@@ -132,6 +233,7 @@ export default function Home() {
           <button 
             onClick={scrollToSecondPage}
             className="animate-bounce focus:outline-none"
+            aria-label="Défiler vers le bas"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -152,13 +254,11 @@ export default function Home() {
 
       {/* Deuxième page - Menu */}
       <div
-        className="absolute top-[100vh] h-screen w-full flex flex-col items-center justify-center px-4 overflow-fix"
+        className="absolute inset-0 z-20 flex flex-col items-center justify-center px-4 transition-all duration-500 ease-in-out"
         style={{
-          opacity: Math.max(0, scrollPercentage * 1.5 - 0.3), // Apparaît progressivement
-          transform: `translateY(${(1 - scrollPercentage) * 30}px)`, // Effet de parallaxe inverse
-          pointerEvents: scrollPercentage < 0.2 ? "none" : "auto", // Activer les interactions quand visible
+          ...secondPageStyle,
+          height: viewportHeight ? `${viewportHeight}px` : '100vh',
           fontFamily: "var(--font-jetbrains-mono)",
-          zIndex: 20,
         }}
       >
         <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto gap-4">
@@ -178,6 +278,7 @@ export default function Home() {
               {item.name}
             </Link>
           ))}
+
         </div>
       </div>
     </div>
