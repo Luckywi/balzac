@@ -3,19 +3,67 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary-gradient-start: #000000;
+  --primary-gradient-end: #8A9A80;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  height: 100%;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: white;
+  font-family: var(--font-jetbrains-mono);
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+/* Optimisations pour les animations */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Animation de rebond pour la flèche */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+/* Styles personnalisés pour les boutons */
+.btn-rdv {
+  border: 1px solid white;
+  border-radius: 9999px;
+  padding: 0.75rem 2.5rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.btn-rdv:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Améliorer les performances des transitions */
+.overflow-fix {
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+/* Assurer des transitions fluides */
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition-duration: 300ms;
 }
