@@ -1,0 +1,32 @@
+/* Style spécifique pour la page des prestations */
+.prestationsPage {
+    height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative; /* Pour éviter les problèmes de débordement */
+    -webkit-overflow-scrolling: touch; /* Pour un défilement fluide sur iOS */
+  }
+  
+  /* Rétablir le défilement normal pour cette page spécifique */
+  .prestationsPage:global(html),
+  .prestationsPage:global(body) {
+    position: relative;
+    overflow: auto;
+    height: auto;
+  }
+  
+  /* Style pour le conteneur de prestations */
+  .prestationsContainer {
+    padding-bottom: 100px; /* Espace en bas pour éviter que le contenu soit coupé */
+  }
+  
+  /* Style pour le bouton de retour fixe */
+  .fixedReturnButton {
+    position: sticky;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 10px 0;
+    z-index: 10;
+  }
