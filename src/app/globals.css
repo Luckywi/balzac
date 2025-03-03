@@ -119,3 +119,21 @@ html, body {
     z-index: 9999;
   }
 }
+
+@media screen and (max-width: 768px) {
+  input[type="text"],
+  input[type="search"],
+  input[type="email"],
+  input[type="number"],
+  input[type="password"],
+  textarea {
+    font-size: 16px !important; /* Empêche le zoom sur iOS */
+  }
+}
+
+/* Prévention du zoom pour Safari sur iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+  input, select, textarea {
+    font-size: 16px !important;
+  }
+}

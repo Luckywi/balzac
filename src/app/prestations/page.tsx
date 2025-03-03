@@ -73,14 +73,15 @@ export default function PrestationsPage() {
           <PrestationsContainer />
         </div>
         
-        <div className={`${styles.fixedReturnButton} mt-16`}>
-          <Link
-            href="/rendez-vous"
-            className="btn-rdv py-3 px-10 hover:bg-white/10 transition-colors backdrop-blur-sm bg-black/30"
-          >
-            PRENDRE RDV
-          </Link>
-        </div>
+        <div className="fixed bottom-6 left-0 right-0 flex justify-center items-center z-50 px-4">
+  <Link
+    href="/rendez-vous"
+    className="btn-rdv py-3 px-10 hover:bg-white/10 transition-colors backdrop-blur-sm bg-black/60 shadow-lg"
+  >
+    PRENDRE RDV
+  </Link>
+</div>
+
       </motion.div>
     </main>
   );

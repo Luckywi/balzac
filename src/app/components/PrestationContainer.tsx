@@ -9,6 +9,23 @@ export default function PrestationsContainer() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredPrestations, setFilteredPrestations] = useState(prestations);
   
+  // Définir handleSearchBlur en dehors de useEffect pour qu'il soit accessible au JSX
+  const handleSearchBlur = () => {
+    // Force un léger délai pour s'assurer que le focus est perdu
+    setTimeout(() => {
+      // Force un niveau de zoom de 1
+      document.documentElement.style.setProperty('zoom', '1');
+      // Alternative pour certains navigateurs
+      (document.body as any).style.zoom = 1;
+      
+      // Pour iOS/Safari
+      document.body.style.webkitTextSizeAdjust = '100%';
+      
+      // Force une mise à jour de la vue
+      window.scrollTo(0, 0);
+    }, 100);
+  };
+  
   useEffect(() => {
     if (!searchTerm.trim()) {
       // Si la recherche est vide, afficher toutes les prestations
@@ -69,14 +86,16 @@ export default function PrestationsContainer() {
     <div className="w-full max-w-2xl mx-auto px-4 pb-8">
       <div className="mb-8">
         <div className="relative">
-        <input
-  type="text"
-  placeholder="Rechercher une prestation..."
-  value={searchTerm}
-  onChange={(e) => setSearchTerm(e.target.value)}
-  className="w-full p-2 pl-8 text-sm bg-white/10 backdrop-blur-md rounded-full border border-white/30 focus:outline-none focus:border-white/50 text-white placeholder-white/50 transition-all"
-/>
-
+          <input 
+            type="text"
+            placeholder="Rechercher une prestation..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            onBlur={handleSearchBlur}
+            className="w-full p-2 pl-8 text-base bg-white/10 backdrop-blur-md rounded-full border border-white/30 focus:outline-none focus:border-white/50 text-white placeholder-white/50 transition-all"
+            style={{ fontSize: '16px' }}
+          />
+          
           {searchTerm.trim() && (
             <button 
               className="absolute right-3 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-white transition-colors"
