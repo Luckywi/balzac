@@ -270,7 +270,7 @@ export default function AvisPage() {
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Voir plus d'avis
+                Voir plus d&apos;avis
               </motion.button>
             </div>
           )}

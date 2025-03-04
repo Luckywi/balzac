@@ -2,6 +2,7 @@
 "use client";
 
 import React, { useEffect } from 'react';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ImageLightboxProps {
@@ -71,11 +72,14 @@ const ImageLightbox: React.FC<ImageLightboxProps> = ({
             onClick={(e) => e.stopPropagation()}
           >
             {/* Image */}
-            <img
-              src={currentImageSrc}
-              alt={currentImageAlt}
-              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
-            />
+            <Image
+  src={currentImageSrc}
+  alt={currentImageAlt}
+  className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl"
+  width={500} // Ajustez selon vos besoins
+  height={300} // Ajustez selon vos besoins
+  style={{ width: 'auto', height: 'auto' }} // Pour maintenir le aspect ratio
+/>
             
             {/* Bouton de fermeture */}
             <button

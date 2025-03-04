@@ -132,7 +132,7 @@ export default function AccesPage() {
             transition={{ delay: 0.4, duration: 0.5 }}
           >
             <div className="p-5">
-              <h3 className="text-xl font-medium text-white mb-4">Horaires d'ouverture</h3>
+              <h3 className="text-xl font-medium text-white mb-4">Horaires d&apos;ouverture</h3>
               
               <div className="divide-y divide-white/10">
                 {horaires.map((item) => (
