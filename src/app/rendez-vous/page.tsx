@@ -1,3 +1,5 @@
+// Modification à apporter dans src/app/rendez-vous/page.tsx
+
 'use client';
 
 import { useEffect } from 'react';
@@ -48,8 +50,12 @@ export default function RendezVousPage() {
 
     // Gérer le chargement initial
     iframe?.addEventListener('load', () => {
-      // Demander à l'iframe d'appliquer les styles via postMessage
+      // Appliquer un style au contenu de l'iframe
       iframe.contentWindow?.postMessage({
+        type: 'applyStyle',
+        style: {
+          bodyBackground: 'transparent' // Fond transparent pour éviter la superposition des dégradés
+        }
       }, 'https://booking-frame2.vercel.app');
       
       // Demander la hauteur
@@ -93,7 +99,8 @@ export default function RendezVousPage() {
       <div className="w-full max-w-md mx-auto px-4 py-8 flex flex-col items-center">
         <h1 className="text-2xl font-medium mb-6 text-white text-center">PRENDRE RENDEZ-VOUS</h1>
         
-        <div className="w-full mb-8">
+        {/* Wrapper avec un fond solide pour l'iframe */}
+        <div className="w-full mb-8 rounded-xl overflow-hidden" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
           <iframe 
             id="booking-frame"
             src="https://booking-frame2.vercel.app/?id=FQPbT92r7KfV5AYwzTHQonVoYRf2"
