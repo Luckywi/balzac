@@ -92,7 +92,7 @@ export default function PrestationsContainer() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             onBlur={handleSearchBlur}
-            className="w-full p-2 pl-8 text-base bg-white/10 backdrop-blur-md rounded-full border border-white/30 focus:outline-none focus:border-white/50 text-white placeholder-white/50 transition-all"
+            className="w-full p-2 pl-8 text-base bg-white/10 backdrop-blur-md rounded-lg border border-white/30 focus:outline-none focus:border-white/50 text-white placeholder-white/50 transition-all"
             style={{ fontSize: '16px' }}
           />
           

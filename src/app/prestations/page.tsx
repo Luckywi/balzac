@@ -41,7 +41,7 @@ export default function PrestationsPage() {
         <div className="relative w-full max-w-2xl mx-auto mb-8">
           <div className="w-full flex gap-4 justify-center mb-6">
     <Link
-      href="/"
+      href="/menu"
       className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
       aria-label="Retour à l'accueil"
     >

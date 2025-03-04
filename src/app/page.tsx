@@ -16,7 +16,6 @@ export default function Home() {
   const minSwipeDistance = 50;
 
   // Effet pour initialiser la hauteur de la fenêtre et écouter les changements
-  // Effet pour initialiser la hauteur de la fenêtre et écouter les changements
 useEffect(() => {
   // Définir la hauteur de viewport initiale (évite les calculs incorrects au montage)
   const calculateViewportHeight = () => {
@@ -226,12 +225,13 @@ useEffect(() => {
             
             <Link
               href="/rendez-vous"
-              className="border border-white rounded-full py-3 px-10 text-sm mb-16 hover:bg-white/10 transition-colors"
+              className="border border-white rounded-lg py-3 px-10 text-sm mb-16 hover:bg-white/10 transition-colors"
             >
               PRENDRE RDV
             </Link>
             
             <div className="flex items-center justify-center mb-1">
+              {/* 4 étoiles pleines */}
               {[1, 2, 3, 4].map((star) => (
                 <svg
                   key={star}
@@ -245,29 +245,35 @@ useEffect(() => {
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
               ))}
+              
+              {/* 5ème étoile 80% remplie (4.8) */}
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
                 height="24"
                 viewBox="0 0 24 24"
-                fill="white"
                 className="mx-0.5"
               >
-                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                <path
-                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-                  fill="black"
-                  opacity="0.5"
-                  clipPath="inset(0 50% 0 0)"
+                <defs>
+                  <linearGradient id="homePartialFill" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="80%" stopColor="white" />
+                    <stop offset="80%" stopColor="transparent" />
+                  </linearGradient>
+                </defs>
+                <path 
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" 
+                  fill="url(#homePartialFill)"
+                  stroke="white"
+                  strokeWidth="1"
                 />
               </svg>
             </div>
             
-            <p className="text-sm mb-2">(4.6)</p>
+            <p className="text-sm mb-2">(4.8)</p>
             
-            <button className="text-xs underline">
-              Voir les 1090 avis
-            </button>
+            <Link href="/avis" className="text-xs underline">
+              Voir les 136 avis
+            </Link>
           </div>
           
           <div className="pb-8">
@@ -313,14 +319,12 @@ useEffect(() => {
               <Link
                 key={item.name}
                 href={item.href}
-                className="border border-white rounded-full py-3 px-10 w-full max-w-xs text-center text-white hover:bg-white/10 transition-colors"
+                className="border border-white rounded-lg py-3 px-10 w-full max-w-xs text-center text-white hover:bg-white/10 transition-colors"
                 prefetch={true}
               >
                 {item.name}
               </Link>
             ))}
-            
-            {/* Bouton pour remonter vers la première page */}
           </div>
         </div>
       </div>

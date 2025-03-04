@@ -5,7 +5,7 @@ export default function MenuPage() {
     <main
       className="min-h-screen flex flex-col items-center justify-center"
       style={{
-        background: "linear-gradient(to bottom, #000000, #8A9A80)",
+        background: "linear-gradient(to bottom, #000000, ##ec8cff)",
         fontFamily: "var(--font-jetbrains-mono)",
       }}
     >
@@ -20,7 +20,7 @@ export default function MenuPage() {
           <Link
             key={item.name}
             href={item.href}
-            className="border border-white rounded-full py-3 px-10 w-full max-w-xs text-center text-white hover:bg-white/10 transition-colors"
+            className="border border-white rounded-lg py-3 px-10 w-full max-w-xs text-center text-white hover:bg-white/10 transition-colors"
           >
             {item.name}
           </Link>

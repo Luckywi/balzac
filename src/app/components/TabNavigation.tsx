@@ -17,8 +17,8 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
   const [currentMemberIndex, setCurrentMemberIndex] = useState(0);
 
   const tabs = [
-    { id: 'salon', label: 'Notre Salon' },
-    { id: 'equipe', label: 'Notre Équipe' },
+    { id: 'salon', label: 'Salon' },
+    { id: 'equipe', label: 'Équipe' },
     { id: 'acces', label: 'Accès' }
   ];
 
@@ -109,11 +109,10 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
         <h3 className="text-lg font-medium text-white mb-2">Le Balzac</h3>
         <p className="text-sm text-white/80">
           Notre salon de coiffure moderne et accueillant vous attend pour une expérience de beauté personnalisée. 
-          Nous utilisons des produits de qualité pour prendre soin de vos cheveux.
         </p>
         <div className="flex justify-between mt-3 text-sm text-white/70">
-          <div>Mardi-Samedi: 9h-19h</div>
-          <div>Tél: 04 72 00 00 00</div>
+          <div>Mardi-Samedi: 9h-19h <br></br>
+          Tél: 04 72 00 00 00</div>
         </div>
       </motion.div>
     </div>
@@ -197,7 +196,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.98 }}
           >
-            Y aller
+          Itinéraire
           </motion.a>
         </div>
       </motion.div>

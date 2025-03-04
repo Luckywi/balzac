@@ -124,7 +124,7 @@ export default function RendezVousPage() {
   {/* Logo Home centré en haut */}
   <div className="w-full flex justify-center mb-6">
     <Link
-      href="/"
+      href="/menu"
       className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
       aria-label="Retour à l'accueil"
     >
