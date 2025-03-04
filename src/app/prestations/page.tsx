@@ -39,49 +39,40 @@ export default function PrestationsPage() {
         transition={{ duration: 0.5 }}
       >
         <div className="relative w-full max-w-2xl mx-auto mb-8">
-          <div className="flex items-center justify-center relative py-2">
-            <Link
-              href="/"
-              className="absolute left-0 p-2 hover:bg-white/10 rounded-full transition-colors"
-              aria-label="Retour"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 12H5M12 19l-7-7 7-7"/>
-              </svg>
-            </Link>
-            
-            <h1 className="text-2xl sm:text-3xl font-medium">Nos Prestations</h1>
-          </div>
-          
-          <p className="text-sm text-center opacity-80 max-w-md mx-auto">
-            Découvrez nos prestations et trouvez celle qui vous correspond. 
-            Tous nos services sont réalisés par des professionnels qualifiés.
-          </p>
+          <div className="w-full flex gap-4 justify-center mb-6">
+    <Link
+      href="/"
+      className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
+      aria-label="Retour à l'accueil"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
+        <path 
+          d="M 50 15 L 15 45 L 25 45 L 25 85 L 75 85 L 75 45 L 85 45 Z" 
+          stroke="white" 
+          strokeWidth="6" 
+          fill="none" 
+        />
+        <rect 
+          x="42" y="60" width="16" height="25" 
+          stroke="white" 
+          strokeWidth="6" 
+          fill="none" 
+        />
+      </svg>
+    </Link>
+    <Link
+    href="/rendez-vous"
+    className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
+  >
+    PRENDRE RDV
+  </Link>
+  </div>
         </div>
         
         <div className={styles.prestationsContainer}>
           <PrestationsContainer />
         </div>
-        
-        <div className="fixed bottom-6 left-0 right-0 flex justify-center items-center z-50 px-4">
-  <Link
-    href="/rendez-vous"
-    className="border border-white rounded-full py-3 px-10 text-white hover:bg-white/10 transition-colors"
-  >
-    PRENDRE RDV
-  </Link>
-</div>
-
+      
       </motion.div>
     </main>
   );

@@ -3,32 +3,31 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import ImageCarousel from '../components/ImageCarousel';
+import TabNavigation from '../components/TabNavigation';
 
 export default function RendezVousPage() {
   // Images du salon pour le carrousel
   const salonImages = [
     {
-      src: "/images/salon/image1.webp", // Chemin relatif au dossier public
+      src: "/images/salon/image1.webp",
       alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
     },
     {
-      src: "/images/salon/image2.webp", // Chemin relatif au dossier public
+      src: "/images/salon/image2.webp",
       alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
     },
     {
-      src: "/images/salon/image3.webp", // Chemin relatif au dossier public
+      src: "/images/salon/image3.webp",
       alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
     },
     {
-      src: "/images/salon/image4.webp", // Chemin relatif au dossier public
+      src: "/images/salon/image4.webp",
       alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
     },
     {
-      src: "/images/salon/image5.webp", // Chemin relatif au dossier public
+      src: "/images/salon/image5.webp",
       alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
     },
-    
   ];
 
   useEffect(() => {
@@ -121,18 +120,34 @@ export default function RendezVousPage() {
         position: "relative"
       }}
     >
-      <div className="w-full max-w-md mx-auto px-4 py-8 flex flex-col items-center">
-        <h1 className="text-2xl font-medium mb-6 text-white text-center">PRENDRE RENDEZ-VOUS</h1>
+<div className="w-full max-w-md mx-auto px-4 py-8 flex flex-col items-center">
+  {/* Logo Home centré en haut */}
+  <div className="w-full flex justify-center mb-6">
+    <Link
+      href="/"
+      className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
+      aria-label="Retour à l'accueil"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
+        <path 
+          d="M 50 15 L 15 45 L 25 45 L 25 85 L 75 85 L 75 45 L 85 45 Z" 
+          stroke="white" 
+          strokeWidth="6" 
+          fill="none" 
+        />
+        <rect 
+          x="42" y="60" width="16" height="25" 
+          stroke="white" 
+          strokeWidth="6" 
+          fill="none" 
+        />
+      </svg>
+    </Link>
+  </div>
+
         
-        {/* Carrousel d'images du salon */}
-        <div className="w-full mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg text-white opacity-80">Notre salon</h2>
-          </div>
-          <div className="bg-black/30 backdrop-blur-sm p-3 rounded-xl shadow-lg">
-            <ImageCarousel images={salonImages} autoplaySpeed={6000} />
-          </div>
-        </div>
+        {/* Composant TabNavigation intégré */}
+        <TabNavigation salonImages={salonImages} />
         
         {/* Wrapper avec un fond solide pour l'iframe */}
         <div className="w-full mb-8 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm shadow-lg">
@@ -150,12 +165,7 @@ export default function RendezVousPage() {
           ></iframe>
         </div>
         
-        <Link
-          href="/"
-          className="border border-white rounded-full py-3 px-10 text-white hover:bg-white/10 transition-colors"
-        >
-          RETOUR
-        </Link>
+        
       </div>
     </main>
   );

@@ -1,4 +1,4 @@
-// src/app/components/ImageCarousel.tsx
+// src/app/components/ImageCarousel.tsx - version mise à jour
 "use client";
 
 import React, { useState, useEffect } from 'react';
@@ -11,16 +11,26 @@ interface ImageCarouselProps {
     alt: string;
   }[];
   autoplaySpeed?: number;
+  onSlideChange?: (index: number) => void; // Nouveau callback pour notifier du changement
 }
 
 const ImageCarousel: React.FC<ImageCarouselProps> = ({ 
   images, 
-  autoplaySpeed = 5000 
+  autoplaySpeed = 5000,
+  onSlideChange
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Notify parent component when slide changes
+  useEffect(() => {
+    if (onSlideChange) {
+      onSlideChange(currentIndex);
+    }
+  }, [currentIndex, onSlideChange]);
 
   // Effet pour l'autoplay
   useEffect(() => {
@@ -45,8 +55,6 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
     setDirection(-1);
     setCurrentIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
   };
-
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const handleDotClick = (index: number) => {
     if (isTransitioning) return;
