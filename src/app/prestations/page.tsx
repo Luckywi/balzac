@@ -28,7 +28,7 @@ export default function PrestationsPage() {
     <main
       className={`min-h-screen flex flex-col ${styles.prestationsPage}`}
       style={{
-        background: "linear-gradient(to bottom, #000000, #8A9A80)",
+        background: "linear-gradient(to bottom, #000000, #ec8cff)",
         fontFamily: "var(--font-jetbrains-mono)",
       }}
     >
@@ -76,7 +76,7 @@ export default function PrestationsPage() {
         <div className="fixed bottom-6 left-0 right-0 flex justify-center items-center z-50 px-4">
   <Link
     href="/rendez-vous"
-    className="btn-rdv py-3 px-10 hover:bg-white/10 transition-colors backdrop-blur-sm bg-black/60 shadow-lg"
+    className="border border-white rounded-full py-3 px-10 text-white hover:bg-white/10 transition-colors"
   >
     PRENDRE RDV
   </Link>

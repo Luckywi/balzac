@@ -10,7 +10,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Le Balzac | Salon de coiffure à Décines-Charpieux",
-  description: "Salon de coiffure pour homme et femme à Décines-Charpieux",
+  description: "Salon de coiffure pour femme et homme à Décines-Charpieux",
   viewport: "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no",
   themeColor: "#000000",
   appleWebApp: {

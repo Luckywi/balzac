@@ -4,7 +4,7 @@
 
 :root {
   --primary-gradient-start: #000000;
-  --primary-gradient-end: #8A9A80;
+  --primary-gradient-end: #ec8cff;
 }
 
 html {
@@ -19,6 +19,7 @@ body {
   padding: 0;
   width: 100%;
   overflow-x: hidden;
+  background: linear-gradient(to bottom, var(--primary-gradient-start), var(--primary-gradient-end));
 }
 
 /* Optimisations pour les animations */

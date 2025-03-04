@@ -201,7 +201,7 @@ useEffect(() => {
         <div
           className="fixed inset-0 z-0"
           style={{
-            background: `linear-gradient(to bottom, #000000, #8A9A80)`,
+            background: `linear-gradient(to bottom, #000000, #ec8cff)`,
           }}
         />
 
@@ -218,10 +218,10 @@ useEffect(() => {
             <h1 className="text-4xl font-medium mb-3">Le Balzac</h1>
             
             <p className="text-sm mb-1">
-              Salon de coiffure Homme et
+              Salon de coiffure Femme et
             </p>
             <p className="text-sm mb-16">
-              Femme à Décines-Charpieux
+              Homme à Décines-Charpieux
             </p>
             
             <Link

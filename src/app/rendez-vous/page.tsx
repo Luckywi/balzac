@@ -1,11 +1,36 @@
-// Modification à apporter dans src/app/rendez-vous/page.tsx
-
+// src/app/rendez-vous/page.tsx
 'use client';
 
 import { useEffect } from 'react';
 import Link from 'next/link';
+import ImageCarousel from '../components/ImageCarousel';
 
 export default function RendezVousPage() {
+  // Images du salon pour le carrousel
+  const salonImages = [
+    {
+      src: "/images/salon/image1.webp", // Chemin relatif au dossier public
+      alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
+    },
+    {
+      src: "/images/salon/image2.webp", // Chemin relatif au dossier public
+      alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
+    },
+    {
+      src: "/images/salon/image3.webp", // Chemin relatif au dossier public
+      alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
+    },
+    {
+      src: "/images/salon/image4.webp", // Chemin relatif au dossier public
+      alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
+    },
+    {
+      src: "/images/salon/image5.webp", // Chemin relatif au dossier public
+      alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
+    },
+    
+  ];
+
   useEffect(() => {
     const iframe = document.getElementById('booking-frame') as HTMLIFrameElement;
     let resizeTimeout: NodeJS.Timeout;
@@ -90,7 +115,7 @@ export default function RendezVousPage() {
     <main
       className="min-h-screen flex flex-col"
       style={{
-        background: "linear-gradient(to bottom, #000000, #8A9A80)",
+        background: "linear-gradient(to bottom, #000000, #ec8cff)",
         fontFamily: "var(--font-jetbrains-mono)",
         overflow: "auto",
         position: "relative"
@@ -99,8 +124,19 @@ export default function RendezVousPage() {
       <div className="w-full max-w-md mx-auto px-4 py-8 flex flex-col items-center">
         <h1 className="text-2xl font-medium mb-6 text-white text-center">PRENDRE RENDEZ-VOUS</h1>
         
+        {/* Carrousel d'images du salon */}
+        <div className="w-full mb-8">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg text-white opacity-80">Notre salon</h2>
+          </div>
+          <div className="bg-black/30 backdrop-blur-sm p-3 rounded-xl shadow-lg">
+            <ImageCarousel images={salonImages} autoplaySpeed={6000} />
+          </div>
+        </div>
+        
         {/* Wrapper avec un fond solide pour l'iframe */}
-        <div className="w-full mb-8 rounded-xl overflow-hidden" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
+        <div className="w-full mb-8 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm shadow-lg">
+          <h2 className="text-lg text-white px-4 py-3 opacity-80 border-b border-white/10">Réservation</h2>
           <iframe 
             id="booking-frame"
             src="https://booking-frame2.vercel.app/?id=FQPbT92r7KfV5AYwzTHQonVoYRf2"
