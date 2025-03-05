@@ -31,7 +31,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({ name, role, image, index }) => 
       variants={cardVariants}
       initial="hidden"
       animate="visible"
-      className="flex flex-col items-center p-4 bg-white/5 rounded-xl backdrop-blur-sm"
+      className="flex flex-col items-center p-4 bg-white/5 rounded-lg backdrop-blur-sm"
     >
       <div className="relative w-32 h-32 rounded-full overflow-hidden mb-4 border-2 border-white/30">
         <div 

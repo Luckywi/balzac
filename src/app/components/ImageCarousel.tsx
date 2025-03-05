@@ -89,7 +89,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
 
   return (
     <div 
-      className="relative w-full h-64 md:h-80 lg:h-96 rounded-xl overflow-hidden"
+      className="relative w-full h-64 md:h-80 lg:h-96 rounded-lg overflow-hidden"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -111,7 +111,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
           onAnimationComplete={() => setIsTransitioning(false)}
         >
           <div 
-            className="w-full h-full bg-cover bg-center rounded-xl cursor-pointer"
+            className="w-full h-full bg-cover bg-center rounded-lg cursor-pointer"
             style={{ 
               backgroundImage: `url(${images[currentIndex].src})`,
               backgroundSize: 'cover',
@@ -123,7 +123,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({
           />
           
           {/* Overlay pour assurer la lisibilité des boutons */}
-          <div className="absolute inset-0 bg-black/20 rounded-xl"></div>
+          <div className="absolute inset-0 bg-black/20 rounded-lg"></div>
         </motion.div>
       </AnimatePresence>
 

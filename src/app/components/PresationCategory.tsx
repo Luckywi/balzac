@@ -34,7 +34,7 @@ export default function PrestationCategory({ category, searchTerm = '' }: Presta
   };
 
   return (
-    <div className="mb-8 bg-black/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg">
+    <div className="mb-8 bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg">
       <div 
         className="p-5 cursor-pointer transition-colors hover:bg-white/5"
         onClick={() => setIsOpen(!isOpen)}

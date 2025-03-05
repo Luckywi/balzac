@@ -37,7 +37,7 @@ export default function AccesPage() {
     <main
       className="min-h-screen flex flex-col"
       style={{
-        background: "linear-gradient(to bottom, #000000, #ec8cff)",
+        background: "linear-gradient(to bottom, #333333, #ec8cff)",
         fontFamily: "var(--font-jetbrains-mono)",
         overflow: "auto",
         position: "relative"
@@ -53,7 +53,7 @@ export default function AccesPage() {
           <div className="w-full flex gap-4 justify-center mb-6">
             <Link
               href="/menu"
-              className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
+              className="py-2 px-4 rounded-lg border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
               aria-label="Retour à l'accueil"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
@@ -73,7 +73,7 @@ export default function AccesPage() {
             </Link>
             <Link
               href="/rendez-vous"
-              className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
+              className="py-2 px-4 rounded-lg border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
             >
               PRENDRE RDV
             </Link>
@@ -84,7 +84,7 @@ export default function AccesPage() {
           
           {/* Carte Google Maps */}
           <motion.div
-            className="w-full mb-8 bg-black/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg"
+            className="w-full mb-8 bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.5 }}
@@ -114,7 +114,7 @@ export default function AccesPage() {
                   href="https://goo.gl/maps/8z9XY1zD3XYqRc7Q6" 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="border border-white rounded-full py-3 px-10 text-white text-center hover:bg-white/10 transition-colors"
+                  className="border border-white rounded-lg py-3 px-10 text-white text-center hover:bg-white/10 transition-colors"
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -126,7 +126,7 @@ export default function AccesPage() {
 
           {/* Horaires */}
           <motion.div
-            className="w-full mb-8 bg-black/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg"
+            className="w-full mb-8 bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.5 }}
@@ -165,7 +165,7 @@ export default function AccesPage() {
 
           {/* Contact */}
           <motion.div
-            className="w-full mb-8 bg-black/20 backdrop-blur-sm rounded-xl overflow-hidden shadow-lg"
+            className="w-full mb-8 bg-black/20 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.5 }}

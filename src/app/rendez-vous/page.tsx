@@ -1,11 +1,13 @@
 // src/app/rendez-vous/page.tsx
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import TabNavigation from '../components/TabNavigation';
 
 export default function RendezVousPage() {
+  const [iframeLoaded, setIframeLoaded] = useState(false);
+
   // Images du salon pour le carrousel
   const salonImages = [
     {
@@ -74,6 +76,9 @@ export default function RendezVousPage() {
 
     // Gérer le chargement initial
     iframe?.addEventListener('load', () => {
+      // Marquer l'iframe comme chargé
+      setIframeLoaded(true);
+      
       // Appliquer un style au contenu de l'iframe
       iframe.contentWindow?.postMessage({
         type: 'applyStyle',
@@ -95,18 +100,24 @@ export default function RendezVousPage() {
 
   // Permettre le défilement sur cette page
   useEffect(() => {
-    // Sauvegarder les styles originaux
-    const originalHtmlStyle = document.documentElement.style.cssText;
-    const originalBodyStyle = document.body.style.cssText;
+    // Appliquer directement les styles sans modifier cssText
+    document.documentElement.style.position = 'relative';
+    document.documentElement.style.height = 'auto';
+    document.documentElement.style.overflow = 'auto';
     
-    // Activer le défilement pour cette page
-    document.documentElement.style.cssText = 'position: relative; height: auto; overflow: auto;';
-    document.body.style.cssText = 'position: relative; height: auto; overflow: auto;';
+    document.body.style.position = 'relative';
+    document.body.style.height = 'auto';
+    document.body.style.overflow = 'auto';
     
-    // Restaurer les styles originaux lors du nettoyage
     return () => {
-      document.documentElement.style.cssText = originalHtmlStyle;
-      document.body.style.cssText = originalBodyStyle;
+      // Rétablir les styles par défaut au démontage
+      document.documentElement.style.position = '';
+      document.documentElement.style.height = '';
+      document.documentElement.style.overflow = '';
+      
+      document.body.style.position = '';
+      document.body.style.height = '';
+      document.body.style.overflow = '';
     };
   }, []);
 
@@ -114,58 +125,66 @@ export default function RendezVousPage() {
     <main
       className="min-h-screen flex flex-col"
       style={{
-        background: "linear-gradient(to bottom, #000000, #ec8cff)",
+        background: "linear-gradient(to bottom, #444444, #ec8cff)",
         fontFamily: "var(--font-jetbrains-mono)",
         overflow: "auto",
         position: "relative"
       }}
     >
-<div className="w-full max-w-md mx-auto px-4 py-8 flex flex-col items-center">
-  {/* Logo Home centré en haut */}
-  <div className="w-full flex justify-center mb-6">
-    <Link
-      href="/menu"
-      className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
-      aria-label="Retour à l'accueil"
-    >
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
-        <path 
-          d="M 50 15 L 15 45 L 25 45 L 25 85 L 75 85 L 75 45 L 85 45 Z" 
-          stroke="white" 
-          strokeWidth="6" 
-          fill="none" 
-        />
-        <rect 
-          x="42" y="60" width="16" height="25" 
-          stroke="white" 
-          strokeWidth="6" 
-          fill="none" 
-        />
-      </svg>
-    </Link>
-  </div>
+      <div className="w-full max-w-md mx-auto px-4 py-8 flex flex-col items-center">
+        {/* Logo Home centré en haut */}
+        <div className="w-full flex justify-center mb-6">
+          <Link
+            href="/menu"
+            className="py-2 px-4 rounded-lg border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
+            aria-label="Retour à l'accueil"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
+              <path 
+                d="M 50 15 L 15 45 L 25 45 L 25 85 L 75 85 L 75 45 L 85 45 Z" 
+                stroke="white" 
+                strokeWidth="6" 
+                fill="none" 
+              />
+              <rect 
+                x="42" y="60" width="16" height="25" 
+                stroke="white" 
+                strokeWidth="6" 
+                fill="none" 
+              />
+            </svg>
+          </Link>
+        </div>
 
-        
         {/* Composant TabNavigation intégré */}
         <TabNavigation salonImages={salonImages} />
         
         {/* Wrapper avec un fond solide pour l'iframe */}
-        <div className="w-full mb-8 rounded-xl overflow-hidden bg-black/30 backdrop-blur-sm shadow-lg">
-          <h2 className="text-lg text-white px-4 py-3 opacity-80 border-b border-white/10">Réservation</h2>
-          <iframe 
-            id="booking-frame"
-            src="https://booking-frame2.vercel.app/?id=FQPbT92r7KfV5AYwzTHQonVoYRf2"
-            style={{
-              width: '100%',
-              height: '300px',
-              border: 'none',
-              transition: 'height 0.2s ease-out',
-              overflow: 'auto'
-            }}
-          ></iframe>
+        <div className="w-full mb-8 rounded-lg overflow-hidden bg-black/20 shadow-lg">
+          <h2 className="text-lg text-white px-4 py-3 border-b border-white/10">Réservation</h2>
+          
+          {/* Conteneur pour l'iframe avec loading state */}
+          <div className="relative">
+            {!iframeLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/10 p-4">
+                <div className="text-white text-sm">Chargement...</div>
+              </div>
+            )}
+            
+            <iframe 
+              id="booking-frame"
+              src="https://booking-frame2.vercel.app/?id=FQPbT92r7KfV5AYwzTHQonVoYRf2"
+              style={{
+                width: '100%',
+                height: '300px',
+                border: 'none',
+                transition: 'height 0.2s ease-out',
+                overflow: 'auto',
+                backgroundColor: 'transparent', // S'assurer que le fond de l'iframe est transparent
+              }}
+            ></iframe>
+          </div>
         </div>
-        
-        
       </div>
     </main>
   );

@@ -200,7 +200,7 @@ useEffect(() => {
         <div
           className="fixed inset-0 z-0"
           style={{
-            background: `linear-gradient(to bottom, #000000, #ec8cff)`,
+            background: "linear-gradient(to bottom, #333333, #ec8cff)",
           }}
         />
 

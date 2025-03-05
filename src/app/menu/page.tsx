@@ -5,7 +5,7 @@ export default function MenuPage() {
     <main
       className="min-h-screen flex flex-col items-center justify-center"
       style={{
-        background: "linear-gradient(to bottom, #000000, ##ec8cff)",
+        background: "linear-gradient(to bottom, #333333, #ec8cff)",
         fontFamily: "var(--font-jetbrains-mono)",
       }}
     >

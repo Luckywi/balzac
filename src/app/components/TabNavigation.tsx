@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ImageCarousel from './ImageCarousel';
+import Modal from './Modal';
 
 interface TabNavigationProps {
   salonImages: {
@@ -13,13 +14,24 @@ interface TabNavigationProps {
 
 const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
   const [activeTab, setActiveTab] = useState('salon');
-  // Déclaré au niveau du composant principal, pas dans une fonction de rendu conditionnelle
   const [currentMemberIndex, setCurrentMemberIndex] = useState(0);
+  const [isHoraireModalOpen, setIsHoraireModalOpen] = useState(false);
 
   const tabs = [
     { id: 'salon', label: 'Salon' },
     { id: 'equipe', label: 'Équipe' },
     { id: 'acces', label: 'Accès' }
+  ];
+
+  // Données des horaires d'ouverture
+  const horaires = [
+    { jour: "Lundi", heures: "Fermé" },
+    { jour: "Mardi", heures: ["08:30 - 11:45", "14:00 - 18:15"] },
+    { jour: "Mercredi", heures: "08:30 - 18:15" },
+    { jour: "Jeudi", heures: "08:30 - 18:15" },
+    { jour: "Vendredi", heures: "08:30 - 18:30" },
+    { jour: "Samedi", heures: "08:30 - 16:00" },
+    { jour: "Dimanche", heures: "Fermé" },
   ];
 
   // Animation variants with improved transitions
@@ -75,6 +87,21 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
     setCurrentMemberIndex(index);
   };
 
+  // Fonction pour ouvrir la modale des horaires
+  const openHoraireModal = () => {
+    setIsHoraireModalOpen(true);
+  };
+
+  // Fonction pour fermer la modale des horaires
+  const closeHoraireModal = () => {
+    setIsHoraireModalOpen(false);
+  };
+
+  // Fonction pour appeler le salon
+  const callSalon = () => {
+    window.location.href = "tel:0472000000";
+  };
+
   // Team members data
   const teamMembers = [
     {
@@ -106,15 +133,120 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3, duration: 0.5 }}
       >
-        <h3 className="text-lg font-medium text-white mb-2">Le Balzac</h3>
-        <p className="text-sm text-white/80">
-          Notre salon de coiffure moderne et accueillant vous attend pour une expérience de beauté personnalisée. 
+        <h3 className="text-lg font-medium text-white mb-3">Le Balzac</h3>
+        <p className="text-sm text-white/80 mb-4">
+          Notre salon de coiffure moderne et accueillant vous attend pour une expérience de beauté personnalisée.
         </p>
-        <div className="flex justify-between mt-3 text-sm text-white/70">
-          <div>Mardi-Samedi: 9h-19h <br></br>
-          Tél: 04 72 00 00 00</div>
+        
+        {/* Nouveaux boutons pour remplacer le texte des horaires et téléphone */}
+        <div className="flex justify-center gap-4">
+          <motion.button
+            onClick={openHoraireModal}
+            className="flex items-center justify-center gap-2 border border-white rounded-lg py-2 px-4 text-white text-sm hover:bg-white/10 transition-colors"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Horaires
+          </motion.button>
+          
+          <motion.button
+            onClick={callSalon}
+            className="flex items-center justify-center gap-2 border border-white rounded-lg py-2 px-4 text-white text-sm hover:bg-white/10 transition-colors"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            Téléphone
+          </motion.button>
         </div>
       </motion.div>
+      
+      {/* Modale des horaires */}
+      <Modal 
+        isOpen={isHoraireModalOpen} 
+        onClose={closeHoraireModal}
+        title="Horaires d'ouverture"
+      >
+        <div className="bg-black/20 backdrop-blur-sm rounded-lg p-5 shadow-lg">
+          <div className="divide-y divide-white/10">
+            {horaires.map((item) => (
+              <div 
+                key={item.jour} 
+                className="py-4 flex justify-between items-center"
+              >
+                <span className={`text-base ${item.heures === "Fermé" ? "text-white/60" : "text-white"} font-medium`}>
+                  {item.jour}
+                </span>
+                
+                <div className="text-right">
+                  {Array.isArray(item.heures) ? (
+                    item.heures.map((heure, i) => (
+                      <div key={i} className="text-base text-white">
+                        {heure}
+                      </div>
+                    ))
+                  ) : (
+                    <span className={`text-base ${item.heures === "Fermé" ? "text-white/60" : "text-white"}`}>
+                      {item.heures}
+                    </span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+          
+          <div className="flex items-center justify-center mt-6 text-center text-sm text-white/70">
+          <motion.button
+            onClick={callSalon}
+            className="flex items-center justify-center gap-2 border border-white rounded-lg py-2 px-4 text-white text-sm hover:bg-white/10 transition-colors"
+            whileHover={{ scale: 1.03 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round"
+            >
+              <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+            </svg>
+            Téléphone
+          </motion.button>
+            
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 
@@ -153,8 +285,7 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
   // Render access content
   const renderAccesContent = () => (
     <div className="p-4">
-      <div className="w-full h-56 rounded-lg overflow-hidden shadow-md relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/30 pointer-events-none z-10"></div>
+      <div className="w-full h-60 rounded-lg overflow-hidden shadow-lg relative">
         <iframe 
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2782.868!2d4.9684!3d45.7672!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f4c1cb00000001%3A0xb4000f5fc4c6c8f2!2s3%20Rue%20Balzac%2C%2069150%20D%C3%A9cines-Charpieu!5e0!3m2!1sfr!2sfr!4v1709052897012!5m2!1sfr!2sfr" 
           width="100%" 
@@ -166,40 +297,35 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
         ></iframe>
       </div>
       
-      <motion.div 
-        className="mt-4 p-3 bg-white/5 rounded-lg"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.5 }}
-      >
-        
-        <div className="flex items-center justify-center mb-3">
-      
-          <a 
-            href="https://goo.gl/maps/8z9XY1zD3XYqRc7Q6" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="mt-3 text-white/80 text-m underline text-center hover:text-white transition-colors"
+      <div className="mt-4 flex items-center justify-center">
+        <motion.a 
+          href="https://goo.gl/maps/8z9XY1zD3XYqRc7Q6" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          className="flex items-center justify-center gap-2 border border-white rounded-lg py-3 px-6 text-white text-sm hover:bg-white/10 transition-colors"
+          whileHover={{ scale: 1.03 }}
+          whileTap={{ scale: 0.98 }}
+        >
+          <svg 
+            xmlns="http://www.w3.org/2000/svg" 
+            width="16" 
+            height="16" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round"
           >
-            3 Rue Balzac, Grand parking gratuit <br></br><br></br>69150 Décines-Charpieu
-          </a>
-        </div>
-        <br></br>
-        
-        
-        <div className="flex justify-center">
-          <motion.a 
-            href="https://goo.gl/maps/8z9XY1zD3XYqRc7Q6" 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="border border-white rounded-full py-3 px-10 text-white text-center hover:bg-white/10 transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.98 }}
-          >
+            <path d="M3 11l19-9-9 19-2-8-8-2z"></path>
+          </svg>
           Itinéraire
-          </motion.a>
-        </div>
-      </motion.div>
+        </motion.a>
+      </div>
+      
+      <div className="mt-3 text-center text-white/80 text-sm">
+        <p>3 Rue Balzac, 69150 Décines-Charpieu</p>
+      </div>
     </div>
   );
 
@@ -207,32 +333,29 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ salonImages }) => {
   const direction = getDirection(activeTab);
 
   return (
-    <div className="w-full mb-8 bg-black/30 backdrop-blur-sm rounded-xl shadow-lg overflow-hidden">
+    <div className="w-full mb-8 bg-black/30 backdrop-blur-sm rounded-lg shadow-lg overflow-hidden">
       {/* Tabs Navigation en haut du même conteneur que le contenu */}
       <div className="relative">
-  <div className="flex items-center justify-center gap-2 rounded-xl p-2 relative bg-black/20">
-    {/* Les boutons doivent maintenant être flex-initial au lieu de flex-1 */}
-    {tabs.map(tab => {
-      const isActive = activeTab === tab.id;
-      return (
-        <button
-          key={tab.id}
-          className={`py-2 px-4 rounded-xl text-sm transition-colors duration-300 z-10 relative ${
-            isActive 
-              ? 'text-white font-medium border border-white' 
-              : 'text-white/70 hover:text-white/90'
-          }`}
-          onClick={() => handleTabChange(tab.id)}
-        >
-          {tab.label}
-        </button>
-      );
-    })}
-  </div>
-</div>
+        <div className="flex items-center justify-center gap-3 rounded-lg p-4 pb-0">
+          {tabs.map(tab => {
+            const isActive = activeTab === tab.id;
+            return (
+              <button
+                key={tab.id}
+                className={`py-2 px-4 rounded-lg text-sm transition-colors duration-300 z-10 relative ${
+                  isActive 
+                    ? 'text-white font-medium border border-white' 
+                    : 'text-white/70 hover:text-white/90'
+                }`}
+                onClick={() => handleTabChange(tab.id)}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+      </div>
 
-
-      
       {/* Tab Content with Animations */}
       <div className="relative w-full">
         <AnimatePresence initial={false} mode="wait" custom={direction}>

@@ -28,7 +28,7 @@ export default function PrestationsPage() {
     <main
       className={`min-h-screen flex flex-col ${styles.prestationsPage}`}
       style={{
-        background: "linear-gradient(to bottom, #000000, #ec8cff)",
+        background: "linear-gradient(to bottom, #333333, #ec8cff)",
         fontFamily: "var(--font-jetbrains-mono)",
       }}
     >
@@ -42,7 +42,7 @@ export default function PrestationsPage() {
           <div className="w-full flex gap-4 justify-center mb-6">
     <Link
       href="/menu"
-      className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
+      className="py-2 px-4 rounded-lg border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
       aria-label="Retour à l'accueil"
     >
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="24" height="24">
@@ -62,7 +62,7 @@ export default function PrestationsPage() {
     </Link>
     <Link
     href="/rendez-vous"
-    className="py-2 px-4 rounded-xl border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
+    className="py-2 px-4 rounded-lg border border-white/150 hover:bg-white/10 transition-all flex items-center justify-center"
   >
     PRENDRE RDV
   </Link>
