@@ -24,7 +24,7 @@ export const metadata: Metadata = {
     address: true,
     telephone: true,
   },
-  metadataBase: new URL("https://votredomaine.fr"), // Remplacez par votre domaine réel
+  metadataBase: new URL("https://www.lebalzac-coiffure-decines.fr/"), // Remplacez par votre domaine réel
   alternates: {
     canonical: "/",
     languages: {
@@ -42,7 +42,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'fr_FR',
-    url: 'https://votredomaine.fr',
+    url: 'https://www.lebalzac-coiffure-decines.fr/',
     title: 'Le Balzac | Salon de coiffure à Décines-Charpieux',
     description: 'Salon de coiffure à Décines-Charpieux. Prestations femme et homme: coupes, couleurs, mèches et soins par des experts. Réservez en ligne dès maintenant.',
     siteName: 'Le Balzac',
@@ -110,8 +110,8 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "HairSalon",
               "name": "Le Balzac",
-              "image": "https://votredomaine.fr/images/salon/image1.webp",
-              "url": "https://votredomaine.fr",
+              "image": "https://www.lebalzac-coiffure-decines.fr//images/salon/image1.webp",
+              "url": "https://www.lebalzac-coiffure-decines.fr/",
               "telephone": "0472000000",
               "address": {
                 "@type": "PostalAddress",
