@@ -1,31 +1,23 @@
-import Link from "next/link";
+import MenuClient from './MenuClient';
+
+export const metadata = {
+  title: 'Menu Principal | Le Balzac Salon de Coiffure',
+  description: 'Accédez aux différentes sections de notre salon de coiffure Le Balzac à Décines-Charpieux: prestations, rendez-vous, équipe, avis et accès.',
+  keywords: ['menu salon', 'navigation salon de coiffure', 'Le Balzac Décines'],
+  openGraph: {
+    title: 'Menu Principal | Le Balzac Salon de Coiffure',
+    description: 'Accédez aux différentes sections de notre salon de coiffure Le Balzac à Décines-Charpieux: prestations, rendez-vous, équipe, avis et accès.',
+    images: [
+      {
+        url: '/images/salon/image5.webp',
+        width: 1200,
+        height: 630,
+        alt: 'Le Balzac Salon de Coiffure',
+      },
+    ],
+  },
+};
 
 export default function MenuPage() {
-  return (
-    <main
-      className="min-h-screen flex flex-col items-center justify-center"
-      style={{
-        background: "linear-gradient(to bottom, #333333, #ec8cff)",
-        fontFamily: "var(--font-jetbrains-mono)",
-      }}
-    >
-      <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto gap-4 px-4 py-12">
-        {[
-          { name: "PRENDRE RDV", href: "/rendez-vous" },
-          { name: "PRESTATIONS", href: "/prestations" },
-          { name: "L'ÉQUIPE", href: "/equipe" },
-          { name: "LES AVIS", href: "/avis" },
-          { name: "ACCÈS", href: "/acces" },
-        ].map((item) => (
-          <Link
-            key={item.name}
-            href={item.href}
-            className="border border-white rounded-lg py-3 px-10 w-full max-w-xs text-center text-white hover:bg-white/10 transition-colors"
-          >
-            {item.name}
-          </Link>
-        ))}
-      </div>
-    </main>
-  );
+  return <MenuClient />;
 }
