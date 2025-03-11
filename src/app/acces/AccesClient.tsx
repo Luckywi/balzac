@@ -26,8 +26,8 @@ export default function AccesClient() {
   const horaires = [
     { jour: "Lundi", heures: "Fermé" },
     { jour: "Mardi", heures: ["08:30 - 11:45", "14:00 - 18:15"] },
-    { jour: "Mercredi", heures: "08:30 - 18:15" },
-    { jour: "Jeudi", heures: "08:30 - 18:15" },
+    { jour: "Mercredi", heures: ["08:30 - 11:45", "14:00 - 18:15"] },
+    { jour: "Jeudi", heures: ["08:30 - 11:45", "14:00 - 18:15"] },
     { jour: "Vendredi", heures: "08:30 - 18:30" },
     { jour: "Samedi", heures: "08:30 - 16:00" },
     { jour: "Dimanche", heures: "Fermé" },

@@ -11,7 +11,7 @@ export interface Avis {
   export const avis: Avis[] = [
     {
       id: 1,
-      service: "Forfait Couleur (racines) et Soin",
+      service: "Couleur et Brushing",
       coiffeur: "Béa",
       client: "Stéphanie",
       date: "16/02/2025",
@@ -19,7 +19,7 @@ export interface Avis {
     },
     {
       id: 2,
-      service: "Forfait Balayage, Coupe, Patine et Soin",
+      service: "Mèches et Coupe et Brushing",
       coiffeur: "Béa",
       client: "Zahoua",
       date: "14/02/2025",
@@ -28,7 +28,7 @@ export interface Avis {
     },
     {
       id: 3,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Béa",
       client: "Anne-Lise",
       date: "08/02/2025",
@@ -36,7 +36,7 @@ export interface Avis {
     },
     {
       id: 4,
-      service: "Couleur (tête entière) et coupe Femme",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Christine",
       date: "29/01/2025",
@@ -44,7 +44,7 @@ export interface Avis {
     },
     {
       id: 5,
-      service: "Forfait Couleur (tête entière) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Béa",
       client: "Angelina",
       date: "14/01/2025",
@@ -52,7 +52,7 @@ export interface Avis {
     },
     {
       id: 6,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Anne Lise",
       date: "14/01/2025",
@@ -61,7 +61,7 @@ export interface Avis {
     },
     {
       id: 7,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Béa",
       client: "Anne Lise",
       date: "14/01/2025",
@@ -70,7 +70,7 @@ export interface Avis {
     },
     {
       id: 8,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Béa",
       client: "Isabelle",
       date: "19/01/2025",
@@ -79,7 +79,7 @@ export interface Avis {
     },
     {
       id: 9,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Eliane",
       date: "08/01/2025",
@@ -88,7 +88,7 @@ export interface Avis {
     },
     {
       id: 10,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Rora",
       date: "16/01/2025",
@@ -97,7 +97,7 @@ export interface Avis {
     },
     {
       id: 11,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Béa",
       client: "Agnes",
       date: "18/01/2025",
@@ -105,7 +105,7 @@ export interface Avis {
     },
     {
       id: 12,
-      service: "Forfait Mèches, Coupe, Patine et Soin",
+      service: "Mèches et Brushing",
       coiffeur: "Béa",
       client: "laetitia",
       date: "15/01/2025",
@@ -113,7 +113,7 @@ export interface Avis {
     },
     {
       id: 13,
-      service: "Forfait Couleur (tête entière) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "MARIE-ANNE",
       date: "09/12/2024",
@@ -122,7 +122,7 @@ export interface Avis {
     },
     {
       id: 14,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Cyril",
       client: "sandrine",
       date: "20/12/2024",
@@ -130,7 +130,7 @@ export interface Avis {
     },
     {
       id: 15,
-      service: "Couleur (tête entière) et coupe Femme",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Isabelle",
       date: "23/12/2024",
@@ -139,7 +139,7 @@ export interface Avis {
     },
     {
       id: 16,
-      service: "Forfait Couleur (tête entière) et Soin",
+      service: "Couleur et Brushing",
       coiffeur: "Cyril",
       client: "Angelina",
       date: "08/12/2024",
@@ -147,7 +147,7 @@ export interface Avis {
     },
     {
       id: 17,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Cyril",
       client: "MARGUERITE",
       date: "06/12/2024",
@@ -156,7 +156,7 @@ export interface Avis {
     },
     {
       id: 18,
-      service: "Forfait Couleur (tête entière) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Gaelle",
       date: "16/12/2024",
@@ -165,7 +165,7 @@ export interface Avis {
     },
     {
       id: 19,
-      service: "Forfait Couleur (tête entière) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Hind",
       date: "07/12/2024",
@@ -174,7 +174,7 @@ export interface Avis {
     },
     {
       id: 20,
-      service: "Forfait Couleur (racines) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Martine",
       date: "02/12/2024",
@@ -183,7 +183,7 @@ export interface Avis {
     },
     {
       id: 21,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Cyril",
       client: "marinelli",
       date: "05/12/2024",
@@ -191,7 +191,7 @@ export interface Avis {
     },
     {
       id: 22,
-      service: "Forfait Couleur (racines) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Manuella",
       date: "09/12/2024",
@@ -200,7 +200,7 @@ export interface Avis {
     },
     {
       id: 23,
-      service: "Forfait Couleur (tête entière) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Lamia",
       date: "29/11/2024",
@@ -209,7 +209,7 @@ export interface Avis {
     },
     {
       id: 24,
-      service: "Forfait Couleur (tête entière) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Aline",
       date: "03/12/2024",
@@ -218,7 +218,7 @@ export interface Avis {
     },
     {
       id: 25,
-      service: "Forfait Couleur (racines) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Béa",
       client: "Cathy",
       date: "19/11/2024",
@@ -226,7 +226,7 @@ export interface Avis {
     },
     {
       id: 26,
-      service: "Forfait Balayage, Coupe, Patine et Soin",
+      service: "Mèches et Coupe et Brushing",
       coiffeur: "Cyril",
       client: "Angelina",
       date: "25/11/2024",
@@ -234,7 +234,7 @@ export interface Avis {
     },
     {
       id: 27,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Béa",
       client: "laetitia",
       date: "27/11/2024",
@@ -243,7 +243,7 @@ export interface Avis {
     },
     {
       id: 28,
-      service: "Forfait Coupe et Soin Femme",
+      service: "Coupe et Brushing",
       coiffeur: "Béa",
       client: "Frida",
       date: "21/11/2024",
@@ -252,7 +252,7 @@ export interface Avis {
     },
     {
       id: 29,
-      service: "Forfait Couleur (tête entière) , Coupe et Soin",
+      service: "Couleur et Coupe et Brushing",
       coiffeur: "Béa",
       client: "veronique",
       date: "16/11/2024",
@@ -261,7 +261,7 @@ export interface Avis {
     },
     {
         id: 30,
-        service: "Forfait Balayage, Coupe, Patine et Soin",
+        service: "Mèches et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Zahoua",
         date: "16/11/2024",
@@ -270,7 +270,7 @@ export interface Avis {
       },
       {
         id: 31,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Laetitia",
         date: "15/11/2024",
@@ -279,7 +279,7 @@ export interface Avis {
       },
       {
         id: 32,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Audrey",
         date: "13/11/2024",
@@ -288,7 +288,7 @@ export interface Avis {
       },
       {
         id: 33,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "CHANTAL",
         date: "13/11/2024",
@@ -297,7 +297,7 @@ export interface Avis {
       },
       {
         id: 34,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Annie",
         date: "12/11/2024",
@@ -306,7 +306,7 @@ export interface Avis {
       },
       {
         id: 35,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "MARGUERITE",
         date: "11/11/2024",
@@ -315,7 +315,7 @@ export interface Avis {
       },
       {
         id: 36,
-        service: "Forfait Balayage, Coupe, Patine et Soin",
+        service: "Mèches et Coupe et Brushing",
         coiffeur: "Béa",
         client: "estele",
         date: "04/11/2024",
@@ -324,7 +324,7 @@ export interface Avis {
       },
       {
         id: 37,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Rora",
         date: "29/10/2024",
@@ -333,7 +333,7 @@ export interface Avis {
       },
       {
         id: 38,
-        service: "Forfait Couleur (tête entière) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Elodie",
         date: "28/10/2024",
@@ -341,7 +341,7 @@ export interface Avis {
       },
       {
         id: 39,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Cyril",
         client: "Mireille",
         date: "15/10/2024",
@@ -350,7 +350,7 @@ export interface Avis {
       },
       {
         id: 40,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "Angelina",
         date: "14/10/2024",
@@ -374,7 +374,7 @@ export interface Avis {
       },
       {
         id: 43,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Agnes",
         date: "14/10/2024",
@@ -383,7 +383,7 @@ export interface Avis {
       },
       {
         id: 44,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Sylvie",
         date: "12/10/2024",
@@ -391,7 +391,7 @@ export interface Avis {
       },
       {
         id: 45,
-        service: "Forfait Balayage et Soin",
+        service: "Brushing",
         coiffeur: "Cyril",
         client: "Karine",
         date: "20/10/2024",
@@ -400,7 +400,7 @@ export interface Avis {
       },
       {
         id: 46,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Muriel",
         date: "14/10/2024",
@@ -409,7 +409,7 @@ export interface Avis {
       },
       {
         id: 47,
-        service: "Forfait Mèches et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Cyril",
         client: "Milka",
         date: "08/10/2024",
@@ -418,7 +418,7 @@ export interface Avis {
       },
       {
         id: 48,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Delphine",
         date: "30/09/2024",
@@ -427,7 +427,7 @@ export interface Avis {
       },
       {
         id: 49,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Anaelle",
         date: "06/10/2024",
@@ -436,7 +436,7 @@ export interface Avis {
       },
       {
         id: 50,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Martine",
         date: "05/10/2024",
@@ -445,7 +445,7 @@ export interface Avis {
       },
       {
         id: 51,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Laetitia",
         date: "01/10/2024",
@@ -453,7 +453,7 @@ export interface Avis {
       },
       {
         id: 52,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Celine",
         date: "02/10/2024",
@@ -461,7 +461,7 @@ export interface Avis {
       },
       {
         id: 53,
-        service: "Forfait Mèches et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Cyril",
         client: "laetitia",
         date: "29/09/2024",
@@ -470,7 +470,7 @@ export interface Avis {
       },
       {
         id: 54,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Manuella",
         date: "11/09/2024",
@@ -479,7 +479,7 @@ export interface Avis {
       },
       {
         id: 55,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Mylène",
         date: "20/09/2024",
@@ -487,7 +487,7 @@ export interface Avis {
       },
       {
         id: 56,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Chenda",
         date: "18/09/2024",
@@ -496,7 +496,7 @@ export interface Avis {
       },
       {
         id: 57,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "océane",
         date: "27/08/2024",
@@ -505,7 +505,7 @@ export interface Avis {
       },
       {
         id: 58,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Ophélie",
         date: "04/09/2024",
@@ -514,7 +514,7 @@ export interface Avis {
       },
       {
         id: 59,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Sabine",
         date: "22/08/2024",
@@ -523,7 +523,7 @@ export interface Avis {
       },
       {
         id: 60,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "laetitia",
         date: "22/08/2024",
@@ -531,7 +531,7 @@ export interface Avis {
       },
       {
         id: 61,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Eleonore",
         date: "20/08/2024",
@@ -539,7 +539,7 @@ export interface Avis {
       },
       {
         id: 62,
-        service: "Forfait Couleur (tête entière) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Cyril",
         client: "Séverine",
         date: "22/08/2024",
@@ -548,7 +548,7 @@ export interface Avis {
       },
       {
         id: 63,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Martine",
         date: "05/08/2024",
@@ -557,7 +557,7 @@ export interface Avis {
       },
       {
         id: 64,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "jacqueline",
         date: "05/08/2024",
@@ -565,7 +565,7 @@ export interface Avis {
       },
       {
         id: 65,
-        service: "Forfait Mèches et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Béa",
         client: "Amandine",
         date: "06/08/2024",
@@ -574,7 +574,7 @@ export interface Avis {
       },
       {
         id: 66,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Evelyne",
         date: "25/07/2024",
@@ -583,7 +583,7 @@ export interface Avis {
       },
       {
         id: 67,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Rora",
         date: "26/07/2024",
@@ -591,7 +591,7 @@ export interface Avis {
       },
       {
         id: 68,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Carli",
         date: "26/07/2024",
@@ -600,7 +600,7 @@ export interface Avis {
       },
       {
         id: 69,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "Mireille",
         date: "16/07/2024",
@@ -609,7 +609,7 @@ export interface Avis {
       },
       {
         id: 70,
-        service: "Forfait Mèches et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Béa",
         client: "Laetitia",
         date: "23/07/2024",
@@ -618,7 +618,7 @@ export interface Avis {
       },
       {
         id: 71,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Soade",
         date: "22/07/2024",
@@ -627,7 +627,7 @@ export interface Avis {
       },
       {
         id: 72,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Marion",
         date: "20/07/2024",
@@ -635,7 +635,7 @@ export interface Avis {
       },
       {
         id: 73,
-        service: "Forfait Mèches, Coupe et Soin",
+        service: "Mèches et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Evelyne",
         date: "13/07/2024",
@@ -644,7 +644,7 @@ export interface Avis {
       },
       {
         id: 74,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "Zahra",
         date: "14/07/2024",
@@ -653,7 +653,7 @@ export interface Avis {
       },
       {
         id: 75,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "laetitia",
         date: "14/07/2024",
@@ -662,7 +662,7 @@ export interface Avis {
       },
       {
         id: 76,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "nadia",
         date: "06/07/2024",
@@ -679,7 +679,7 @@ export interface Avis {
       },
       {
         id: 78,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Pascal",
         date: "11/07/2024",
@@ -688,7 +688,7 @@ export interface Avis {
       },
       {
         id: 79,
-        service: "Forfait Ombré Hair, Patine et Soin",
+        service: "Mèches et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Marie",
         date: "05/07/2024",
@@ -696,7 +696,7 @@ export interface Avis {
       },
       {
         id: 80,
-        service: "Forfait Mèches, Coupe et Soin",
+        service: "Mèches et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Corinne",
         date: "29/06/2024",
@@ -704,7 +704,7 @@ export interface Avis {
       },
       {
         id: 81,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "chama",
         date: "01/07/2024",
@@ -713,7 +713,7 @@ export interface Avis {
       },
       {
         id: 82,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "IRENE",
         date: "29/06/2024",
@@ -722,7 +722,7 @@ export interface Avis {
       },
       {
         id: 83,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Malika",
         date: "23/06/2024",
@@ -731,7 +731,7 @@ export interface Avis {
       },
       {
         id: 84,
-        service: "Forfait Couleur (tête entière) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Cyril",
         client: "Sarah",
         date: "15/06/2024",
@@ -740,7 +740,7 @@ export interface Avis {
       },
       {
         id: 85,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Cyril",
         client: "Séverine",
         date: "13/06/2024",
@@ -749,7 +749,7 @@ export interface Avis {
       },
       {
         id: 86,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "Mireille",
         date: "19/05/2024",
@@ -758,7 +758,7 @@ export interface Avis {
       },
       {
         id: 87,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "sandrine",
         date: "16/05/2024",
@@ -766,7 +766,7 @@ export interface Avis {
       },
       {
         id: 88,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "Stéphanie",
         date: "18/05/2024",
@@ -774,7 +774,7 @@ export interface Avis {
       },
       {
         id: 89,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Alexandrine",
         date: "10/05/2024",
@@ -782,7 +782,7 @@ export interface Avis {
       },
       {
         id: 90,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Laetitia",
         date: "06/05/2024",
@@ -791,7 +791,7 @@ export interface Avis {
       },
       {
         id: 91,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "Mireille",
         date: "29/04/2024",
@@ -800,7 +800,7 @@ export interface Avis {
       },
       {
         id: 92,
-        service: "Forfait Ombré Hair, Patine et Soin",
+        service: "Mèches et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Marie",
         date: "28/04/2024",
@@ -809,7 +809,7 @@ export interface Avis {
       },
       {
         id: 93,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "CLEMENTINE",
         date: "20/04/2024",
@@ -817,7 +817,7 @@ export interface Avis {
       },
       {
         id: 94,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Natalia",
         date: "17/04/2024",
@@ -825,7 +825,7 @@ export interface Avis {
       },
       {
         id: 95,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Karine",
         date: "03/04/2024",
@@ -834,7 +834,7 @@ export interface Avis {
       },
       {
         id: 96,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "EVELINE",
         date: "07/04/2024",
@@ -843,7 +843,7 @@ export interface Avis {
       },
       {
         id: 97,
-        service: "Forfait Couleur (tête entière) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Béa",
         client: "Mireille",
         date: "04/04/2024",
@@ -852,7 +852,7 @@ export interface Avis {
       },
       {
         id: 98,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Angelina",
         date: "05/04/2024",
@@ -860,7 +860,7 @@ export interface Avis {
       },
       {
         id: 99,
-        service: "Forfait Couleur (racines) et Soin",
+        service: "Couleur et Brushing",
         coiffeur: "Cyril",
         client: "Maria",
         date: "05/04/2024",
@@ -868,7 +868,7 @@ export interface Avis {
       },
       {
         id: 100,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Stéphanie",
         date: "27/03/2024",
@@ -876,7 +876,7 @@ export interface Avis {
       },
       {
         id: 101,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Florence",
         date: "30/03/2024",
@@ -884,7 +884,7 @@ export interface Avis {
       },
       {
         id: 102,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Milka",
         date: "01/04/2024",
@@ -893,7 +893,7 @@ export interface Avis {
       },
       {
         id: 103,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "chama",
         date: "31/03/2024",
@@ -902,7 +902,7 @@ export interface Avis {
       },
       {
         id: 104,
-        service: "Forfait Mèches et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Béa",
         client: "laetitia",
         date: "22/03/2024",
@@ -910,7 +910,7 @@ export interface Avis {
       },
       {
         id: 105,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Evelyne",
         date: "21/03/2024",
@@ -919,7 +919,7 @@ export interface Avis {
       },
       {
         id: 106,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Besset",
         date: "15/03/2024",
@@ -927,7 +927,7 @@ export interface Avis {
       },
       {
         id: 107,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Aline",
         date: "13/03/2024",
@@ -936,7 +936,7 @@ export interface Avis {
       },
       {
         id: 108,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "EVELINE",
         date: "05/03/2024",
@@ -945,7 +945,7 @@ export interface Avis {
       },
       {
         id: 109,
-        service: "Forfait Mèches et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Cyril",
         client: "Valérie",
         date: "02/03/2024",
@@ -954,7 +954,7 @@ export interface Avis {
       },
       {
         id: 110,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Claire",
         date: "01/03/2024",
@@ -963,7 +963,7 @@ export interface Avis {
       },
       {
         id: 111,
-        service: "Forfait Couleur (tête entière) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Sophie",
         date: "25/02/2024",
@@ -971,7 +971,7 @@ export interface Avis {
       },
       {
         id: 112,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Kaotar",
         date: "01/03/2024",
@@ -979,7 +979,7 @@ export interface Avis {
       },
       {
         id: 113,
-        service: "Forfait Mèches et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Cyril",
         client: "sandrine",
         date: "20/02/2024",
@@ -987,7 +987,7 @@ export interface Avis {
       },
       {
         id: 114,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Mireille",
         date: "23/02/2024",
@@ -996,7 +996,7 @@ export interface Avis {
       },
       {
         id: 115,
-        service: "Forfait Couleur (tête entière) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Clara",
         date: "08/02/2024",
@@ -1005,7 +1005,7 @@ export interface Avis {
       },
       {
         id: 116,
-        service: "Forfait Mèches et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Cyril",
         client: "Laetitia",
         date: "08/02/2024",
@@ -1014,7 +1014,7 @@ export interface Avis {
       },
       {
         id: 117,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Soade",
         date: "15/02/2024",
@@ -1022,7 +1022,7 @@ export interface Avis {
       },
       {
         id: 118,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Zora",
         date: "05/02/2024",
@@ -1031,7 +1031,7 @@ export interface Avis {
       },
       {
         id: 119,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "caroline",
         date: "01/02/2024",
@@ -1040,7 +1040,7 @@ export interface Avis {
       },
       {
         id: 120,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "laetitia",
         date: "28/01/2024",
@@ -1049,7 +1049,7 @@ export interface Avis {
       },
       {
         id: 121,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Marie",
         date: "24/01/2024",
@@ -1058,7 +1058,7 @@ export interface Avis {
       },
       {
         id: 122,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Agnes",
         date: "29/01/2024",
@@ -1067,7 +1067,7 @@ export interface Avis {
       },
       {
         id: 123,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "noelle",
         date: "29/01/2024",
@@ -1076,7 +1076,7 @@ export interface Avis {
       },
       {
         id: 124,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Besset",
         date: "25/01/2024",
@@ -1084,7 +1084,7 @@ export interface Avis {
       },
       {
         id: 125,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Natalia",
         date: "23/01/2024",
@@ -1092,7 +1092,7 @@ export interface Avis {
       },
       {
         id: 126,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Anicet",
         date: "24/01/2024",
@@ -1101,7 +1101,7 @@ export interface Avis {
       },
       {
         id: 127,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Louise",
         date: "20/01/2024",
@@ -1110,7 +1110,7 @@ export interface Avis {
       },
       {
         id: 128,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Béa",
         client: "Geraldine",
         date: "16/01/2024",
@@ -1119,7 +1119,7 @@ export interface Avis {
       },
       {
         id: 129,
-        service: "Forfait Balayage, Coupe et Soin",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Caroline",
         date: "12/01/2024",
@@ -1127,7 +1127,7 @@ export interface Avis {
       },
       {
         id: 130,
-        service: "Forfait Couleur (racines) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Béa",
         client: "Stéphanie",
         date: "23/12/2023",
@@ -1136,7 +1136,7 @@ export interface Avis {
       },
       {
         id: 131,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Stéphanie",
         date: "02/01/2024",
@@ -1145,7 +1145,7 @@ export interface Avis {
       },
       {
         id: 132,
-        service: "Forfait Mèches, Coupe, Patine et Soin",
+        service: "Mèches et Brushing",
         coiffeur: "Cyril",
         client: "sandrine",
         date: "31/12/2023",
@@ -1153,7 +1153,7 @@ export interface Avis {
       },
       {
         id: 133,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Florence",
         date: "30/12/2023",
@@ -1161,7 +1161,7 @@ export interface Avis {
       },
       {
         id: 134,
-        service: "Forfait Coupe et Soin Femme",
+        service: "Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Anouk",
         date: "28/12/2023",
@@ -1170,7 +1170,7 @@ export interface Avis {
       },
       {
         id: 135,
-        service: "Forfait Couleur (tête entière) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Cathy",
         date: "27/12/2023",
@@ -1178,7 +1178,7 @@ export interface Avis {
       },
       {
         id: 136,
-        service: "Forfait Couleur (tête entière) , Coupe et Soin",
+        service: "Couleur et Coupe et Brushing",
         coiffeur: "Cyril",
         client: "Anaïs",
         date: "27/12/2023",
