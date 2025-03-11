@@ -308,24 +308,27 @@ useEffect(() => {
             fontFamily: "var(--font-jetbrains-mono)",
           } as React.CSSProperties}
         >
-          <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto gap-6">
-            {[
-              { name: "PRENDRE RDV", href: "/rendez-vous" },
-              { name: "PRESTATIONS", href: "/prestations" },
-              { name: "L'ÉQUIPE", href: "/equipe" },
-              { name: "LES AVIS", href: "/avis" },
-              { name: "ACCÈS", href: "/acces" },
-            ].map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="border border-white rounded-lg py-3 px-10 w-full max-w-xs text-center text-white hover:bg-white/10 transition-colors"
-                prefetch={true}
-              >
-                {item.name}
-              </Link>
-            ))}
-          </div>
+          <nav aria-label="Navigation principale" className="w-full max-w-md mx-auto">
+  <ul className="flex flex-col items-center justify-center gap-6">
+    {[
+      { name: "PRENDRE RDV", href: "/rendez-vous" },
+      { name: "PRESTATIONS", href: "/prestations" },
+      { name: "L'ÉQUIPE", href: "/equipe" },
+      { name: "LES AVIS", href: "/avis" },
+      { name: "ACCÈS", href: "/acces" },
+    ].map((item) => (
+      <li key={item.name} className="w-full max-w-xs">
+        <Link
+          href={item.href}
+          className="border border-white rounded-lg py-3 px-10 w-full text-center text-white hover:bg-white/10 transition-colors block"
+          prefetch={true}
+        >
+          {item.name}
+        </Link>
+      </li>
+    ))}
+  </ul>
+</nav>
         </div>
       </div>
     </>

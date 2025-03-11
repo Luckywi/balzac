@@ -1,6 +1,5 @@
 /* Style spécifique pour la page des prestations */
 .prestationsPage {
-    height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative; /* Pour éviter les problèmes de débordement */
@@ -15,11 +14,7 @@
     height: auto;
   }
   
-  /* Style pour le conteneur de prestations */
-  .prestationsContainer {
-    padding-bottom: 100px; /* Espace en bas pour éviter que le contenu soit coupé */
-  }
-  
+
   /* Style pour le bouton de retour fixe */
   .fixedReturnButton {
     position: fixed;
