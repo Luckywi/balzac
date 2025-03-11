@@ -1,7 +1,7 @@
 import { MetadataRoute } from 'next'
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://www.lebalzac-coiffure-decines.fr/";
+  const baseUrl = "https://www.lebalzac-coiffure-decines.fr";
   const lastModified = new Date();
 
   // Pages principales du site
