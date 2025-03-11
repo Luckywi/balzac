@@ -1,59 +1,39 @@
+// src/app/layout.tsx
 import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
+import { Analytics } from '@vercel/analytics/next';
+import Footer from './components/Footer';
 import "./globals.css";
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-jetbrains-mono",
   weight: ["400", "500", "700"],
-  display: "swap", // Optimisation pour le chargement des polices
+  display: "swap",
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.lebalzac-coiffure-decines.fr'),
   title: {
     default: "Le Balzac | Salon de coiffure à Décines-Charpieux",
     template: "%s | Le Balzac Salon de Coiffure"
   },
-  description: "Salon de coiffure pour femme et homme à Décines-Charpieux. Coupes, couleurs, mèches, balayages et soins par des experts passionnés. Grand parking gratuit, ambiance chaleureuse.",
-  keywords: ["salon de coiffure", "coiffeur Décines", "coupe femme", "coupe homme", "coloration", "balayage", "mèches", "Décines-Charpieux", "Le Balzac"],
-  authors: [{ name: "Le Balzac" }],
-  creator: "Le Balzac",
-  publisher: "Le Balzac",
-  formatDetection: {
-    email: false,
-    address: true,
-    telephone: true,
-  },
-  metadataBase: new URL("https://www.lebalzac-coiffure-decines.fr"), // Remplacez par votre domaine réel
-  alternates: {
-    canonical: "/",
-    languages: {
-      'fr-FR': "/",
-    },
-  },
-  viewport: "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no",
-  themeColor: "#000000",
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: "black-translucent",
-    title: "Le Balzac"
-  },
-  applicationName: "Le Balzac",
+  description: "Salon de coiffure expert pour femmes et hommes au 3 Rue Balzac, 69150 Décines-Charpieux. Spécialistes en coupes, colorations, mèches et soins personnalisés.",
   openGraph: {
-    type: 'website',
-    locale: 'fr_FR',
+    title: "Le Balzac | Salon de Coiffure à Décines-Charpieux",
+    description: "Bienvenue au salon Le Balzac, votre salon de coiffure expert au 3 Rue Balzac, 69150 Décines-Charpieux.",
     url: 'https://www.lebalzac-coiffure-decines.fr',
-    title: 'Le Balzac | Salon de coiffure à Décines-Charpieux',
-    description: 'Salon de coiffure à Décines-Charpieux. Prestations femme et homme: coupes, couleurs, mèches et soins par des experts. Réservez en ligne dès maintenant.',
-    siteName: 'Le Balzac',
+    siteName: 'Le Balzac Salon de Coiffure',
     images: [
       {
         url: '/images/salon/image1.webp',
         width: 1200,
         height: 630,
-        alt: 'Le Balzac - Salon de coiffure à Décines-Charpieux',
+        alt: 'Salon de coiffure Le Balzac à Décines-Charpieux',
       },
     ],
+    locale: 'fr_FR',
+    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
@@ -73,19 +53,30 @@ export const metadata: Metadata = {
       'max-snippet': -1,
     },
   },
-  icons: {
-    icon: [
-      { url: '/favicon.ico' },
-      { url: '/icon.png', type: 'image/png', sizes: '192x192' },
-    ],
-    apple: [
-      { url: '/apple-icon.png', sizes: '180x180', type: 'image/png' },
-    ],
+  keywords: ["salon de coiffure", "coiffeur Décines", "coupe femme", "coupe homme", "coloration", "balayage", "mèches", "Décines-Charpieux", "Le Balzac", "3 Rue Balzac"],
+  alternates: {
+    canonical: "/",
+    languages: {
+      'fr-FR': "/",
+    },
   },
+  formatDetection: {
+    email: false,
+    address: true,
+    telephone: true,
+  },
+  viewport: "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no",
+  themeColor: "#000000",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Le Balzac"
+  },
+  applicationName: "Le Balzac",
+  category: 'beauty',
   verification: {
     google: 'votre-code-verification-google', // Ajoutez votre code de vérification Google ici
   },
-  category: 'beauty',
 };
 
 export default function RootLayout({
@@ -103,98 +94,11 @@ export default function RootLayout({
           content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" 
         />
         <link rel="manifest" href="/manifest.json" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "HairSalon",
-              "name": "Le Balzac",
-              "image": "https://www.lebalzac-coiffure-decines.fr/images/salon/image1.webp",
-              "url": "https://www.lebalzac-coiffure-decines.fr",
-              "telephone": "0472000000",
-              "address": {
-                "@type": "PostalAddress",
-                "streetAddress": "3 Rue Balzac",
-                "addressLocality": "Décines-Charpieu",
-                "postalCode": "69150",
-                "addressCountry": "FR"
-              },
-              "geo": {
-                "@type": "GeoCoordinates",
-                "latitude": 45.7672,
-                "longitude": 4.9684
-              },
-              "openingHoursSpecification": [
-                {
-                  "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": ["Monday"],
-                  "opens": "00:00",
-                  "closes": "00:00"
-                },
-                {
-                  "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": ["Tuesday"],
-                  "opens": "08:30",
-                  "closes": "11:45"
-                },
-                {
-                  "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": ["Tuesday"],
-                  "opens": "14:00",
-                  "closes": "18:15"
-                },
-                {
-                  "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": ["Wednesday", "Thursday"],
-                  "opens": "08:30",
-                  "closes": "18:15"
-                },
-                {
-                  "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": ["Friday"],
-                  "opens": "08:30",
-                  "closes": "18:30"
-                },
-                {
-                  "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": ["Saturday"],
-                  "opens": "08:30",
-                  "closes": "16:00"
-                },
-                {
-                  "@type": "OpeningHoursSpecification",
-                  "dayOfWeek": ["Sunday"],
-                  "opens": "00:00",
-                  "closes": "00:00"
-                }
-              ],
-              "priceRange": "€€",
-              "servesCuisine": "Haircut, Hair Coloring, Hair Styling",
-              "review": {
-                "@type": "Review",
-                "reviewRating": {
-                  "@type": "Rating",
-                  "ratingValue": "4.8",
-                  "bestRating": "5"
-                },
-                "author": {
-                  "@type": "Person",
-                  "name": "Clients du salon Le Balzac"
-                }
-              },
-              "aggregateRating": {
-                "@type": "AggregateRating",
-                "ratingValue": "4.8",
-                "ratingCount": "136",
-                "bestRating": "5"
-              }
-            })
-          }}
-        />
       </head>
       <body className={`${jetbrainsMono.variable}`}>
         {children}
+        <Footer />
+        <Analytics />
       </body>
     </html>
   );
