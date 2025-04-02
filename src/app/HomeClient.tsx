@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Head from "next/head";
+import SplashScreen from "./components/SplashScreen";
 
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -12,6 +13,12 @@ export default function Home() {
   const [touchEnd, setTouchEnd] = useState<number | null>(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [viewportHeight, setViewportHeight] = useState(0);
+  const [showSplash, setShowSplash] = useState(true);
+
+  // Gérer la fin de l'animation de splash screen
+  const handleSplashComplete = () => {
+    setShowSplash(false);
+  };
 
   // Minimum swipe distance (en px) requis pour déclencher un changement de page
   const minSwipeDistance = 50;
@@ -175,6 +182,30 @@ export default function Home() {
     changePage(1);
   };
 
+  // IMPORTANT: On commente temporairement la gestion du localStorage pour tester
+  // useEffect(() => {
+  //   if (typeof window !== 'undefined') {
+  //     try {
+  //       // Vérifier si le localStorage est disponible
+  //       const splashShown = localStorage.getItem('splashShown');
+  //       const lastVisit = localStorage.getItem('lastVisit');
+  //       const now = Date.now();
+        
+  //       // Si la splash a déjà été montrée récemment (dans les dernières 24h)
+  //       if (splashShown && lastVisit && (now - parseInt(lastVisit)) < 86400000) {
+  //         setShowSplash(false);
+  //       } else {
+  //         // Enregistrer que la splash a été montrée
+  //         localStorage.setItem('splashShown', 'true');
+  //         localStorage.setItem('lastVisit', now.toString());
+  //       }
+  //     } catch {
+  //       // En cas d'erreur (localStorage désactivé), ne pas montrer la splash
+  //       setShowSplash(false);
+  //     }
+  //   }
+  // }, []);
+
   return (
     <>
       <Head>
@@ -183,6 +214,9 @@ export default function Home() {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </Head>
+      
+      {/* Splash Screen - On s'assure que showSplash est bien à true */}
+      {showSplash && <SplashScreen onAnimationComplete={handleSplashComplete} />}
       
       <div 
         ref={containerRef}

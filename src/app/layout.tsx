@@ -1,5 +1,5 @@
 // src/app/layout.tsx
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import { Analytics } from '@vercel/analytics/next';
 import Footer from './components/Footer';
@@ -85,8 +85,6 @@ export const metadata: Metadata = {
       'fr-FR': "/",
     },
   },
-  viewport: "width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no",
-  themeColor: "#000000",
   appleWebApp: {
     capable: true,
     statusBarStyle: "black-translucent",
@@ -101,6 +99,14 @@ export const metadata: Metadata = {
     'geo.region': 'FR-ARA',
     'ICBM': '45.7672, 4.9684',
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  userScalable: false, // équivalent à user-scalable=no
+  themeColor: "#000000",
 };
 
 export default function RootLayout({
