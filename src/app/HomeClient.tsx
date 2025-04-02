@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Head from "next/head";
 
 export default function Home() {
@@ -16,61 +17,61 @@ export default function Home() {
   const minSwipeDistance = 50;
 
   // Effet pour initialiser la hauteur de la fenêtre et écouter les changements
-useEffect(() => {
-  // Définir la hauteur de viewport initiale (évite les calculs incorrects au montage)
-  const calculateViewportHeight = () => {
-    // On utilise window.innerHeight pour obtenir la hauteur visuelle réelle
-    const vh = window.innerHeight;
-    setViewportHeight(vh);
-    
-    // Applique une variable CSS pour les hauteurs relatives
-    document.documentElement.style.setProperty('--vh', `${vh}px`);
-  };
-
-  // Calcul initial
-  calculateViewportHeight();
-
-  // Recalculer à chaque redimensionnement ou changement d'orientation
-  window.addEventListener('resize', calculateViewportHeight);
-  window.addEventListener('orientationchange', calculateViewportHeight);
-
-  // Éviter les oscillations du viewport sur iOS en désactivant le zoom automatique
-  document.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 1) {
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  // Solution spécifique pour iOS
-  if (typeof window !== 'undefined') {
-    const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
-    
-    if (iOS) {
-      // Définir la couleur de fond pour la barre d'état
-      document.body.style.setProperty('background-color', '#000000');
-      document.documentElement.style.setProperty('background-color', '#000000');
+  useEffect(() => {
+    // Définir la hauteur de viewport initiale (évite les calculs incorrects au montage)
+    const calculateViewportHeight = () => {
+      // On utilise window.innerHeight pour obtenir la hauteur visuelle réelle
+      const vh = window.innerHeight;
+      setViewportHeight(vh);
       
-      // Force le rendu de la barre d'état par un léger scroll
-      window.scrollTo(0, 1);
-      setTimeout(() => {
-        window.scrollTo(0, 0);
-      }, 100);
+      // Applique une variable CSS pour les hauteurs relatives
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    };
+
+    // Calcul initial
+    calculateViewportHeight();
+
+    // Recalculer à chaque redimensionnement ou changement d'orientation
+    window.addEventListener('resize', calculateViewportHeight);
+    window.addEventListener('orientationchange', calculateViewportHeight);
+
+    // Éviter les oscillations du viewport sur iOS en désactivant le zoom automatique
+    document.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+    }, { passive: false });
+
+    // Solution spécifique pour iOS
+    if (typeof window !== 'undefined') {
+      const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
       
-      // Ajouter la classe pour le mode iOS
-      document.documentElement.classList.add('ios-device');
-      
-      // Gérer l'interface en plein écran
-      if (navigator.standalone) {
-        document.documentElement.classList.add('ios-standalone');
+      if (iOS) {
+        // Définir la couleur de fond pour la barre d'état
+        document.body.style.setProperty('background-color', '#000000');
+        document.documentElement.style.setProperty('background-color', '#000000');
+        
+        // Force le rendu de la barre d'état par un léger scroll
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+        }, 100);
+        
+        // Ajouter la classe pour le mode iOS
+        document.documentElement.classList.add('ios-device');
+        
+        // Gérer l'interface en plein écran
+        if (navigator.standalone) {
+          document.documentElement.classList.add('ios-standalone');
+        }
       }
     }
-  }
 
-  return () => {
-    window.removeEventListener('resize', calculateViewportHeight);
-    window.removeEventListener('orientationchange', calculateViewportHeight);
-  };
-}, []);
+    return () => {
+      window.removeEventListener('resize', calculateViewportHeight);
+      window.removeEventListener('orientationchange', calculateViewportHeight);
+    };
+  }, []);
 
   // Gestionnaire du toucher initial
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -214,14 +215,19 @@ useEffect(() => {
           } as React.CSSProperties}
         >
           <div className="flex-1 flex flex-col items-center justify-center w-full max-w-md mx-auto text-center text-white">
-            <h1 className="text-4xl font-medium mb-3">Le Balzac</h1>
-            
-            <p className="text-sm mb-1">
-              Salon de coiffure Femme et
-            </p>
-            <p className="text-sm mb-16">
-              Homme à Décines-Charpieux
-            </p>
+            <div className="mb-4 w-full flex flex-col items-center">
+              <Image 
+                src="/images/salon/le-balzac-logo.png" 
+                alt="Logo Le Balzac Salon de Coiffure Décines" 
+                width={260}
+                height={128}
+                priority
+                className="mb-2"
+              />
+              <br></br>
+              <h1 className="text-md font-medium  text-center">Salon de coiffure Masculin Féminin <br></br> Le Balzac à Décines</h1>
+              <br></br>
+            </div>
             
             <Link
               href="/rendez-vous"
@@ -241,6 +247,7 @@ useEffect(() => {
                   viewBox="0 0 24 24"
                   fill="white"
                   className="mx-0.5"
+                  aria-hidden="true"
                 >
                   <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                 </svg>
@@ -253,6 +260,7 @@ useEffect(() => {
                 height="24"
                 viewBox="0 0 24 24"
                 className="mx-0.5"
+                aria-hidden="true"
               >
                 <defs>
                   <linearGradient id="homePartialFill" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -269,7 +277,7 @@ useEffect(() => {
               </svg>
             </div>
             
-            <p className="text-sm mb-2">(4.8)</p>
+            <p className="text-sm mb-2" aria-label="Note 4.8 sur 5">(4.8)</p>
             
             <Link href="/avis" className="text-xs underline">
               Voir les 136 avis
@@ -292,6 +300,7 @@ useEffect(() => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
+                aria-hidden="true"
               >
                 <polyline points="6 9 12 15 18 9"></polyline>
               </svg>
@@ -309,26 +318,26 @@ useEffect(() => {
           } as React.CSSProperties}
         >
           <nav aria-label="Navigation principale" className="w-full max-w-md mx-auto">
-  <ul className="flex flex-col items-center justify-center gap-6">
-    {[
-      { name: "PRENDRE RDV", href: "/rendez-vous" },
-      { name: "PRESTATIONS", href: "/prestations" },
-      { name: "L'ÉQUIPE", href: "/equipe" },
-      { name: "LES AVIS", href: "/avis" },
-      { name: "ACCÈS", href: "/acces" },
-    ].map((item) => (
-      <li key={item.name} className="w-full max-w-xs">
-        <Link
-          href={item.href}
-          className="border border-white rounded-lg py-3 px-10 w-full text-center text-white hover:bg-white/10 transition-colors block"
-          prefetch={true}
-        >
-          {item.name}
-        </Link>
-      </li>
-    ))}
-  </ul>
-</nav>
+            <ul className="flex flex-col items-center justify-center gap-6">
+              {[
+                { name: "PRENDRE RDV", href: "/rendez-vous" },
+                { name: "PRESTATIONS", href: "/prestations" },
+                { name: "L'ÉQUIPE", href: "/equipe" },
+                { name: "LES AVIS", href: "/avis" },
+                { name: "ACCÈS", href: "/acces" },
+              ].map((item) => (
+                <li key={item.name} className="w-full max-w-xs">
+                  <Link
+                    href={item.href}
+                    className="border border-white rounded-lg py-3 px-10 w-full text-center text-white hover:bg-white/10 transition-colors block"
+                    prefetch={true}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
       </div>
     </>

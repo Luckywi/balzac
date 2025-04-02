@@ -98,7 +98,14 @@ export default function AdmClient() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
               >
-                <h1 className="text-2xl font-medium text-white mb-4">Le Balzac & ADMLAB</h1>
+                <div className="flex justify-center mb-4">
+                <Image 
+                  src="/images/salon/le-balzac-logo.png" 
+                  alt="ADMLAB Logo" 
+                  width={160}
+                  height={64}
+                  priority
+                /></div>
                 
                 <p className="text-white/80 text-sm">
                   Le salon de coiffure Le Balzac a choisi l&apos;agence web ADMLAB pour développer sa présence digitale. 

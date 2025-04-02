@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -9,7 +10,18 @@ export default function Footer() {
       <div className="max-w-md mx-auto">
         {/* Coordonnées du salon */}
         <div className="text-center mb-4">
-          <h3 className="text-white font-medium mb-2">Le Balzac</h3>
+          <div className="flex justify-center">
+          <Link href="/">
+              <Image 
+                src="/images/salon/le-balzac-logo.png" 
+                alt="Logo Le Balzac Salon de Coiffure Décines" 
+                width={140}
+                height={64}
+                priority
+              />
+              </Link>
+            </div>
+            <br></br>
           <p className="text-white/80 text-sm">3 Rue Balzac, 69150 Décines-Charpieux</p>
           <p className="text-white/80 text-sm">Tél: 04 72 02 00 56</p>
         </div>

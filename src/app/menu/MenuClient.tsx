@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 
 export default function MenuClient() {
     return (
@@ -11,6 +12,22 @@ export default function MenuClient() {
           fontFamily: "var(--font-jetbrains-mono)",
         }}
       >
+
+<div className="mb-4 w-full flex flex-col items-center">
+  <Link href="/">
+              <Image 
+                src="/images/salon/le-balzac-logo.png" 
+                alt="Logo Le Balzac Salon de Coiffure Décines" 
+                width={260}
+                height={128}
+                priority
+                className="mb-2"
+              />
+              </Link>
+              <br></br>
+              <h1 className="sr-only">Salon de coiffure Masculin Féminin <br></br> Le Balzac à Décines</h1>
+              <br></br>
+            </div>
         <nav aria-label="Navigation principale" className="w-full max-w-md mx-auto">
   <ul className="flex flex-col items-center justify-center gap-6">
     {[
