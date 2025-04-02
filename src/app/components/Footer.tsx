@@ -31,6 +31,9 @@ export default function Footer() {
           <Link href="/acces" className="text-white/80 text-xs hover:text-white transition-colors">
             Accès
           </Link>
+          <Link href="/admlab" className="text-white/80 text-xs py-2 px-4 rounded-lg border hover:text-white transition-colors">
+            Agence web ADMLAB
+          </Link>
         </div>
         
         {/* Copyright */}

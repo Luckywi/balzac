@@ -38,7 +38,7 @@ export default function MenuClient() {
           <h1>Menu principal du salon de coiffure Le Balzac à Décines-Charpieux</h1>
           <p>
             Bienvenue sur le menu principal du salon Le Balzac. Accédez à nos différentes sections pour prendre rendez-vous, 
-            consulter nos prestations et tarifs, découvrir notre équipe de coiffeurs professionnels,
+            consulter nos prestations et tari, découvrir notre équipe de coiffeurs professionnels,
             lire les avis de nos clients ou trouver nos coordonnées et plan d&aposaccès.
           </p>
         </div>
