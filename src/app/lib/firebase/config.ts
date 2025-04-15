@@ -14,11 +14,6 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
-console.log("🔥 Firebase: Configuration chargée");
-console.log("🔥 ProjectID:", firebaseConfig.projectId);
-console.log("🔥 API Key définie:", !!firebaseConfig.apiKey);
-console.log("🔥 Auth Domain défini:", !!firebaseConfig.authDomain);
-
 
 // Initialiser Firebase seulement s'il n'est pas déjà initialisé
 let firebaseApp: FirebaseApp;

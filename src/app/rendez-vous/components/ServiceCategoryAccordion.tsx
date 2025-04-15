@@ -1,13 +1,15 @@
+// ✅ ServiceCategoryAccordion.tsx
 "use client";
 
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import type { Section, Service } from '../../lib/firebase/types';
-import ServiceCard from './ServiceCard';
+import { motion, AnimatePresence } from "framer-motion";
+import type { Section, Service } from "../../lib/firebase/types";
+import ServiceCard from "./ServiceCard";
 
 interface ServiceCategoryAccordionProps {
   section: Section;
   services: Service[];
+  isOpen: boolean;
+  onToggle: () => void;
   selectedServiceId: string | null;
   onSelectService: (service: Service) => void;
 }
@@ -15,29 +17,23 @@ interface ServiceCategoryAccordionProps {
 export default function ServiceCategoryAccordion({ 
   section, 
   services, 
+  isOpen,
+  onToggle,
   selectedServiceId, 
-  onSelectService 
+  onSelectService
 }: ServiceCategoryAccordionProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  
-  // Ouvrir automatiquement si un service de cette section est sélectionné
-  const hasSelectedService = services.some(service => service.id === selectedServiceId);
-  
-  // Si un service de cette section est sélectionné, forcer l'ouverture
-  const effectiveIsOpen = hasSelectedService || isOpen;
-  
   return (
     <div className="mb-4">
-      {/* En-tête de la section */}
+      {/* Header */}
       <motion.div 
         className="py-3 px-4 border-b border-white/20 flex justify-between items-center cursor-pointer"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={onToggle}
         whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
         whileTap={{ backgroundColor: 'rgba(255, 255, 255, 0.15)' }}
       >
         <h2 className="text-white font-medium">{section.title}</h2>
         <motion.div
-          animate={{ rotate: effectiveIsOpen ? 180 : 0 }}
+          animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.3 }}
           className="text-white/70"
         >
@@ -56,10 +52,10 @@ export default function ServiceCategoryAccordion({
           </svg>
         </motion.div>
       </motion.div>
-      
-      {/* Contenu de la section avec animation */}
+
+      {/* Content */}
       <AnimatePresence>
-        {effectiveIsOpen && (
+        {isOpen && (
           <motion.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}

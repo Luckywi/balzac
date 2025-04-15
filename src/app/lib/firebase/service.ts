@@ -65,8 +65,8 @@ export const getServices = async (sectionId?: string): Promise<Service[]> => {
       
       // Construire la requête
       const servicesQuery = sectionId 
-        ? query(servicesCollection, where("sectionId", "==", sectionId), where("enabled", "==", true))
-        : query(servicesCollection, where("enabled", "==", true));
+  ? query(servicesCollection, where("sectionId", "==", sectionId))
+  : query(servicesCollection);
       
       console.log("📊 Requête sur la collection:", servicesCollection.path);
       
