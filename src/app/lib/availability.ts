@@ -1,5 +1,5 @@
 // src/app/lib/availability.ts
-import { addDays, addMinutes, format, isWithinInterval, isSameDay, startOfDay, endOfDay } from 'date-fns';
+import { addDays, addMinutes, format, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 import { fr as frLocale } from 'date-fns/locale';
 import { Timestamp } from 'firebase/firestore';
 

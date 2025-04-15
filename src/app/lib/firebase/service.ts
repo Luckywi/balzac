@@ -1,4 +1,4 @@
-// src/lib/firebase/services.ts
+// src/lib/firebase/service.ts
 import { 
     collection, 
     doc, 
@@ -29,8 +29,7 @@ import {
   const salonCollection = collection(db, "salon");
   
   // Services pour les sections
-  // Services pour les sections
-export const getSections = async (): Promise<Section[]> => {
+  export const getSections = async (): Promise<Section[]> => {
     try {
       console.log("📊 Firebase: Tentative de récupération des sections...");
       console.log("📊 Requête sur la collection:", sectionsCollection.path);
@@ -58,15 +57,14 @@ export const getSections = async (): Promise<Section[]> => {
   };
   
   // Services pour les services
- // Services pour les services
-export const getServices = async (sectionId?: string): Promise<Service[]> => {
+  export const getServices = async (sectionId?: string): Promise<Service[]> => {
     try {
       console.log(`📊 Firebase: Récupération des services ${sectionId ? `pour la section: ${sectionId}` : 'tous'}`);
       
       // Construire la requête
       const servicesQuery = sectionId 
-  ? query(servicesCollection, where("sectionId", "==", sectionId))
-  : query(servicesCollection);
+        ? query(servicesCollection, where("sectionId", "==", sectionId))
+        : query(servicesCollection);
       
       console.log("📊 Requête sur la collection:", servicesCollection.path);
       
@@ -108,16 +106,24 @@ export const getServices = async (sectionId?: string): Promise<Service[]> => {
     }
   };
   
-  // Services pour le staff
+  // Services pour le staff - MODIFIÉ: récupère tous les staff sans filtre active
   export const getStaffMembers = async (): Promise<StaffMember[]> => {
     try {
-      const querySnapshot = await getDocs(
-        query(staffCollection, where("active", "==", true))
-      );
-      return querySnapshot.docs.map(doc => ({ 
-        id: doc.id, 
-        ...doc.data() 
-      } as StaffMember));
+      console.log("📊 Firebase: Récupération de tous les membres du staff...");
+      // Récupérer tous les membres du staff sans filtre
+      const querySnapshot = await getDocs(staffCollection);
+      console.log(`📊 Firebase: ${querySnapshot.size} membres du staff trouvés.`);
+      
+      return querySnapshot.docs.map(doc => {
+        const data = doc.data();
+        console.log(`📊 Staff trouvé - ID: ${doc.id}, Nom: ${data.name || 'Non spécifié'}`);
+        return { 
+          id: doc.id, 
+          ...data,
+          // Si active n'existe pas dans les données, on considère que le staff est actif par défaut
+          active: data.active !== undefined ? data.active : true
+        } as StaffMember;
+      });
     } catch (error) {
       console.error("Erreur lors de la récupération du personnel:", error);
       throw error;
@@ -126,13 +132,41 @@ export const getServices = async (sectionId?: string): Promise<Service[]> => {
   
   export const getStaffAvailability = async (staffId: string): Promise<StaffAvailability | null> => {
     try {
-      const availabilityDoc = await getDoc(doc(staffCollection, staffId, "availability", "config"));
+      console.log(`📊 Firebase: Récupération des disponibilités pour le staff: ${staffId}`);
+      // Essayer d'abord de récupérer les disponibilités dans une sous-collection
+      const availabilityDoc = await getDoc(doc(staffCollection, staffId));
+      
       if (availabilityDoc.exists()) {
-        return { staffId, ...availabilityDoc.data() } as StaffAvailability;
+        const data = availabilityDoc.data();
+        console.log(`📊 Disponibilités trouvées directement dans le document staff:`, data);
+        
+        // Vérifier si les données de disponibilité sont directement dans le document staff
+        if (data.workingHours) {
+          console.log(`📊 Structure de workingHours trouvée dans le document staff`);
+          return { 
+            staffId, 
+            workingHours: data.workingHours || {},
+            breaks: data.breaks || [],
+            vacations: data.vacations || []
+          } as StaffAvailability;
+        }
       }
+      
+      // Si pas dans le document principal, essayer la sous-collection "availability"
+      try {
+        const subCollectionDoc = await getDoc(doc(staffCollection, staffId, "availability", "config"));
+        if (subCollectionDoc.exists()) {
+          console.log(`📊 Disponibilités trouvées dans la sous-collection availability`);
+          return { staffId, ...subCollectionDoc.data() } as StaffAvailability;
+        }
+      } catch {
+        console.log(`📊 Pas de sous-collection availability pour le staff ${staffId}`);
+      }
+      
+      console.log(`⚠️ Aucune disponibilité trouvée pour le staff ${staffId}`);
       return null;
     } catch (error) {
-      console.error("Erreur lors de la récupération des disponibilités:", error);
+      console.error(`❌ Erreur lors de la récupération des disponibilités pour le staff ${staffId}:`, error);
       throw error;
     }
   };

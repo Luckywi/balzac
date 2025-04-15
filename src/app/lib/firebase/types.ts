@@ -60,7 +60,7 @@ export interface StaffMember {
   role?: string;
   email?: string;
   photoURL?: string;
-  active: boolean;
+  active?: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }

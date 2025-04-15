@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { addDays, subDays, isSameDay } from 'date-fns';
+import StaffSelect from './StaffSelect'; // Importation du nouveau composant
 import { 
   generateAvailableTimeSlots, 
   checkDateHasAvailableSlots,
@@ -41,8 +42,8 @@ export default function DateTimeSelection({
   const [weekStartDate, setWeekStartDate] = useState<Date>(new Date());
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
   const [selectedStaffId, setSelectedStaffId] = useState<string | null>(null);
+  const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
   const [expandedDay, setExpandedDay] = useState<string | null>(null);
   const [weekDates, setWeekDates] = useState<Date[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -73,6 +74,27 @@ export default function DateTimeSelection({
     setAvailableTimeSlots(slots);
     setSelectedTime(null);
   }, [selectedDate, selectedStaffId, salonConfig, staffAvailabilities, existingRdvs, serviceDuration]);
+
+  // Vérifier les disponibilités après avoir changé de collaborateur
+  useEffect(() => {
+    if (selectedDate) {
+      // Vérifions si la date actuelle a toujours des disponibilités
+      const hasSlots = salonConfig ? checkDateHasAvailableSlots(
+        selectedDate,
+        serviceDuration,
+        salonConfig,
+        staffAvailabilities,
+        existingRdvs,
+        selectedStaffId
+      ) : false;
+      
+      if (!hasSlots) {
+        // Si plus de disponibilités, réinitialiser la sélection de date
+        setSelectedDate(null);
+        setExpandedDay(null);
+      }
+    }
+  }, [selectedStaffId, salonConfig, staffAvailabilities, existingRdvs, serviceDuration, selectedDate]);
 
   // Fonction pour vérifier si une date a des créneaux disponibles
   const hasAvailableSlots = (date: Date): boolean => {
@@ -135,11 +157,10 @@ export default function DateTimeSelection({
   };
 
   // Gérer le changement de coiffeur
-  const handleStaffChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value;
-    setSelectedStaffId(value === "no-preference" ? null : value);
+  const handleStaffChange = (staffId: string | null) => {
+    console.log("Staff sélectionné:", staffId);
+    setSelectedStaffId(staffId);
     setSelectedTime(null);
-    setExpandedDay(null);
   };
 
   // Vérifier si un jour est le jour actuellement développé
@@ -191,25 +212,14 @@ export default function DateTimeSelection({
       {/* Service Info Card */}
       <div className="bg-white/10 rounded-lg p-4 mb-4">
         <h3 className="font-medium text-white">{serviceTitle}</h3>
-        <p className="text-sm text-white/70">{serviceDuration}min - {servicePrice}€</p>
+        <p className="text-sm text-white/70 mb-3">{serviceDuration}min - {servicePrice}€</p>
         
-        {/* Staff Selection Dropdown */}
-        <div className="mt-3">
-          <select
-            value={selectedStaffId || "no-preference"}
-            onChange={handleStaffChange}
-            className="w-full rounded-lg bg-white/20 p-3 text-white outline-none focus:bg-white/30 transition-colors"
-          >
-            <option value="no-preference">Avec qui ?</option>
-            {staffMembers && staffMembers.length > 0 ? (
-              staffMembers.map(staff => (
-                <option key={staff.id} value={staff.id}>{staff.name}</option>
-              ))
-            ) : (
-              <option disabled>Chargement des coiffeurs...</option>
-            )}
-          </select>
-        </div>
+        {/* Utilisation du composant personnalisé StaffSelect */}
+        <StaffSelect 
+          staffMembers={staffMembers}
+          selectedStaffId={selectedStaffId}
+          onChange={handleStaffChange}
+        />
       </div>
 
       {/* Week Navigation */}
@@ -262,6 +272,7 @@ export default function DateTimeSelection({
         {weekDates.map((date) => {
           const isAvailable = hasAvailableSlots(date);
           const isExpanded = isDayExpanded(date);
+          
           return (
             <div key={date.toISOString()}>
               <button 
