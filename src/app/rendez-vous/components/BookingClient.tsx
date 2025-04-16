@@ -220,7 +220,7 @@ export default function BookingClient() {
   const getStaffName = () => {
     if (!selectedStaffId) return "Sans préférence";
     const staff = staffMembers.find(s => s.id === selectedStaffId);
-    return staff ? staff.name : "Coiffeur inconnu";
+    return staff ? staff.id : "Coiffeur inconnu";
   };
   
   return (
