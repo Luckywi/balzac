@@ -18,11 +18,12 @@ export interface Rdv {
   clientEmail?: string;
   clientPhone?: string;
   price: number;
-  source: string; // 'admin' ou 'client'
+  source?: string; // 'admin' ou 'client'
   createdAt: Timestamp;
   paid?: boolean;
   paymentIntentId?: string; // ID de l'intention de paiement Stripe
-  paymentStatus?: 'pending' | 'completed' | 'failed';
+  paymentStatus?: string;
+
 }
 
 // Interface pour la configuration du salon

@@ -11,9 +11,9 @@ import {
   formatMonthDay,
   type SalonConfig,
   type StaffAvailability,
-  type Rdv,
   type StaffMember
 } from '../../lib/availability';
+import type { Rdv } from '../../lib/firebase/types';
 
 interface DateTimeSelectionProps {
   serviceId: string;

@@ -2,6 +2,7 @@
 import { addDays, addMinutes, format, isWithinInterval, startOfDay, endOfDay } from 'date-fns';
 import { fr as frLocale } from 'date-fns/locale';
 import { Timestamp } from 'firebase/firestore';
+import type { Rdv } from './firebase/types';
 
 // Types from Firebase
 export interface WorkHours {
@@ -46,21 +47,6 @@ export interface StaffAvailability {
   vacations: Vacation[];
 }
 
-export interface Rdv {
-  id: string;
-  serviceId: string;
-  serviceTitle: string;
-  serviceDuration: number;
-  staffId: string;
-  start: string; // ISO date string
-  end: string;   // ISO date string
-  clientName: string;
-  clientPhone?: string;
-  price: number;
-  source: string;
-  createdAt: Timestamp;
-  paid?: boolean;
-}
 
 export interface StaffMember {
   id: string;
@@ -68,7 +54,7 @@ export interface StaffMember {
   role?: string;
   email?: string;
   photoURL?: string;
-  active: boolean;
+  active?: boolean;
   createdAt: Timestamp;
   updatedAt: Timestamp;
 }
