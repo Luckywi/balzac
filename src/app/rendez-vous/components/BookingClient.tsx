@@ -106,7 +106,7 @@ export default function BookingClient() {
       
       let attempts = 0;
       const maxAttempts = 10; // 10 tentatives maximum
-      const delay = 3000; // 3 secondes entre chaque tentative
+      const delay = 500; // 3 secondes entre chaque tentative
       
       // Boucle de vérification du statut
       while (attempts < maxAttempts) {
