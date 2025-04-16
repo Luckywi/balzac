@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import TabNavigation from '../components/TabNavigation';
+import BookingClient from './components/BookingClient';
 
 export default function RdvClient() {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
 
   // Images du salon pour le carrousel
   const salonImages = [
@@ -73,22 +73,6 @@ export default function RdvClient() {
       }, 'https://booking-frame2.vercel.app');
     }
 
-    // Gérer le chargement initial
-    iframe?.addEventListener('load', () => {
-      // Marquer l'iframe comme chargé
-      setIframeLoaded(true);
-      
-      // Appliquer un style au contenu de l'iframe
-      iframe.contentWindow?.postMessage({
-        type: 'applyStyle',
-        style: {
-          bodyBackground: 'transparent' // Fond transparent pour éviter la superposition des dégradés
-        }
-      }, 'https://booking-frame2.vercel.app');
-      
-      // Demander la hauteur
-      requestHeight();
-    });
 
     window.addEventListener('message', handleMessage);
 
@@ -164,24 +148,13 @@ export default function RdvClient() {
           
           {/* Conteneur pour l'iframe avec loading state */}
           <div className="relative">
-            {!iframeLoaded && (
+
               <div className="absolute inset-0 flex items-center justify-center bg-black/10 p-4">
-                <div className="text-white text-sm">Chargement...</div>
+      
               </div>
-            )}
+        
             
-            <iframe 
-              id="booking-frame"
-              src="https://booking-frame2.vercel.app/?id=FQPbT92r7KfV5AYwzTHQonVoYRf2"
-              style={{
-                width: '100%',
-                height: '300px',
-                border: 'none',
-                transition: 'height 0.2s ease-out',
-                overflow: 'auto',
-                backgroundColor: 'transparent', // S'assurer que le fond de l'iframe est transparent
-              }}
-            ></iframe>
+            <BookingClient />
           </div>
         </div>
       </div>

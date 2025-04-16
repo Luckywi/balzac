@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
 import RdvClient from './RdvClient';
-import BookingClient from './components/BookingClient';
 
 
 // Définition des mots-clés et phrases pertinentes
@@ -98,7 +97,6 @@ export default function RendezVousPage() {
         }}
       />
       <RdvClient />
-      <BookingClient />
     </>
   );
 }
