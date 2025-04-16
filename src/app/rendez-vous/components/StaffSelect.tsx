@@ -43,7 +43,7 @@ export default function StaffSelect({
   const getSelectedStaffName = () => {
     if (!selectedStaffId) return "Avec qui ?";
     const staff = staffMembers.find(s => s.id === selectedStaffId);
-    return staff ? staff.name : "Avec qui ?";
+    return staff ? staff.id : "Avec qui ?";
   };
 
   // Animation variants pour le dropdown
@@ -80,10 +80,10 @@ export default function StaffSelect({
 
   return (
     <div ref={dropdownRef} className={`relative ${className}`}>
-      {/* Bouton du select */}
+      {/* Bouton du select - Fond modifié */}
       <button
         type="button"
-        className="w-full rounded-lg bg-white/20 p-3 text-white outline-none focus:bg-white/30 transition-colors flex items-center justify-between"
+        className="w-full rounded-lg bg-gray-100/90 backdrop-blur-sm p-3 text-purple-900 outline-none border border-gray-200 focus:bg-gray-200/90 hover:bg-gray-200/90 transition-colors flex items-center justify-between"
         onClick={() => setIsOpen(!isOpen)}
       >
         <span className="truncate">{getSelectedStaffName()}</span>
@@ -105,7 +105,7 @@ export default function StaffSelect({
         </motion.svg>
       </button>
 
-      {/* Dropdown des options avec fond plus opaque */}
+      {/* Dropdown des options avec fond opaque blanc/gris */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -113,13 +113,13 @@ export default function StaffSelect({
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="absolute z-10 w-full mt-1 bg-black/70 backdrop-blur-md rounded-lg overflow-hidden shadow-lg"
+            className="absolute z-10 w-full mt-1 bg-gray-100/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-lg border border-gray-200"
           >
             {/* Option "Sans préférence" */}
             <motion.button
               variants={optionVariants}
-              className={`w-full text-left px-4 py-3 hover:bg-white/30 transition-colors ${
-                selectedStaffId === null ? 'bg-white/30 text-white' : 'text-white/90'
+              className={`w-full text-left px-4 py-3 hover:bg-gray-200/90 transition-colors ${
+                selectedStaffId === null ? 'bg-gray-200/90 text-purple-900 font-medium' : 'text-purple-900'
               }`}
               onClick={() => {
                 onChange(null);
@@ -127,7 +127,7 @@ export default function StaffSelect({
               }}
             >
               <div className="flex items-center">
-                <div className="rounded-full bg-white/20 w-8 h-8 flex items-center justify-center mr-3">
+                <div className="rounded-full bg-gray-300/90 w-8 h-8 flex items-center justify-center mr-3">
                   <svg 
                     xmlns="http://www.w3.org/2000/svg" 
                     width="16" 
@@ -149,7 +149,7 @@ export default function StaffSelect({
 
             {/* Affichage du debugging pour vérifier les données */}
             {staffMembers.length === 0 && (
-              <div className="p-4 text-white text-center">
+              <div className="p-4 text-purple-900 text-center">
                 Aucun collaborateur disponible
               </div>
             )}
@@ -159,8 +159,8 @@ export default function StaffSelect({
               <motion.button
                 key={staff.id}
                 variants={optionVariants}
-                className={`w-full text-left px-4 py-3 hover:bg-white/30 transition-colors ${
-                  selectedStaffId === staff.id ? 'bg-white/30 text-white' : 'text-white/90'
+                className={`w-full text-left px-4 py-3 hover:bg-gray-200/90 transition-colors ${
+                  selectedStaffId === staff.id ? 'bg-gray-200/90 text-purple-900 font-medium' : 'text-purple-900'
                 }`}
                 onClick={() => {
                   onChange(staff.id);
@@ -169,7 +169,7 @@ export default function StaffSelect({
               >
                 <div className="flex items-center">
                   {staff.photoURL ? (
-                    <div className="w-8 h-8 rounded-full overflow-hidden mr-3 bg-white/10">
+                    <div className="w-8 h-8 rounded-full overflow-hidden mr-3 bg-gray-300/90">
                       <Image 
                         src={staff.photoURL} 
                         alt={staff.name || "Collaborateur"} 
@@ -179,7 +179,7 @@ export default function StaffSelect({
                       />
                     </div>
                   ) : (
-                    <div className="rounded-full bg-white/20 w-8 h-8 flex items-center justify-center mr-3">
+                    <div className="rounded-full bg-gray-300/90 w-8 h-8 flex items-center justify-center mr-3">
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
                         width="16" 
@@ -198,10 +198,10 @@ export default function StaffSelect({
                   )}
                   <div>
                     <div className="font-medium">
-                      {staff.name || `Collaborateur ${staff.id}`}
+                      {staff.name || `${staff.id}`}
                     </div>
                     {staff.role && (
-                      <div className="text-xs text-white/70">{staff.role}</div>
+                      <div className="text-xs text-purple-700">{staff.role}</div>
                     )}
                   </div>
                 </div>
