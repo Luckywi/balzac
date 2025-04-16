@@ -9,35 +9,39 @@ import PaymentForm from './PaymentForm';
 import BookingStepper from './BookingStepper';
 import ServiceSelection from './ServiceSelection';
 import DateTimeSelection from './DateTimeSelection';
-import { getSalonConfig, getStaffMembers, getStaffAvailability, getRdvsByDateRange, createRdv } from '../../lib/firebase/service';
+import { getSalonConfig, getStaffMembers, getStaffAvailability, getRdvsByDateRange } from '../../lib/firebase/service';
 import type { SalonConfig, StaffMember, StaffAvailability, Rdv, Service } from '../../lib/firebase/types';
 import { addDays } from 'date-fns';
 
 // Étapes du processus de réservation
-type BookingStep = 'service' | 'datetime' | 'info' | 'payment' | 'confirmation';
+type BookingStep = 'service' | 'datetime' | 'info' | 'payment' | 'processing' | 'confirmation' | 'error';
 
 export default function BookingClient() {
-  // États
+  // États principaux
   const [currentStep, setCurrentStep] = useState<BookingStep>('service');
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [selectedStaffId, setSelectedStaffId] = useState<string | null>(null);
-  const [, setAppointment] = useState<any>(null); // Pour utiliser les valeurs
+  const [, setAppointment] = useState<any>(null);
   
   // États pour les informations du client
   const [clientName, setClientName] = useState<string>('');
   const [clientPhone, setClientPhone] = useState<string>('');
   const [clientEmail, setClientEmail] = useState<string>('');
-  //const [paymentIntentId, setPaymentIntentId] = useState<string | null>(null);
-  const [, setBookingId] = useState<string | null>(null);
+  const [, setPaymentIntentId] = useState<string | null>(null);
+  const [bookingId, setBookingId] = useState<string | null>(null);
+  
+  // États pour gérer les erreurs et le chargement
+  const [loading, setLoading] = useState<boolean>(true);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [, setWebhookStatus] = useState<'pending' | 'succeeded' | 'failed' | null>(null);
   
   // Données Firebase
   const [salonConfig, setSalonConfig] = useState<SalonConfig | null>(null);
   const [staffMembers, setStaffMembers] = useState<StaffMember[]>([]);
   const [staffAvailabilities, setStaffAvailabilities] = useState<StaffAvailability[]>([]);
   const [existingRdvs, setExistingRdvs] = useState<Rdv[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   
   // Définir les étapes
   const steps = [
@@ -94,6 +98,57 @@ export default function BookingClient() {
     fetchData();
   }, []);
   
+  // Fonction pour vérifier le statut d'un paiement via le webhook
+  const checkPaymentStatus = async (paymentIntentId: string) => {
+    try {
+      // On attendra un peu avant de commencer à interroger le statut
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      let attempts = 0;
+      const maxAttempts = 10; // 10 tentatives maximum
+      const delay = 3000; // 3 secondes entre chaque tentative
+      
+      // Boucle de vérification du statut
+      while (attempts < maxAttempts) {
+        console.log(`Vérification du statut du paiement... Tentative ${attempts + 1}/${maxAttempts}`);
+        
+        const response = await fetch(`/api/payment-status?paymentId=${paymentIntentId}`);
+        if (response.ok) {
+          const data = await response.json();
+          
+          if (data.status === 'succeeded') {
+            console.log("Le paiement a été confirmé par le webhook!", data);
+            setWebhookStatus('succeeded');
+            setBookingId(data.bookingId);
+            return true;
+          } else if (data.status === 'failed') {
+            console.log("Le paiement a échoué selon le webhook", data);
+            setWebhookStatus('failed');
+            setPaymentError(data.error || "Le paiement a échoué");
+            return false;
+          }
+        }
+        
+        // Si on n'a pas encore de statut définitif, on attend avant la prochaine tentative
+        await new Promise(resolve => setTimeout(resolve, delay));
+        attempts++;
+      }
+      
+      // Si on arrive ici, c'est qu'on a dépassé le nombre maximum de tentatives
+      console.log("Timeout: aucune confirmation du webhook après plusieurs tentatives");
+      setWebhookStatus('pending');
+      
+      // On considère que le paiement est réussi côté client même si le webhook n'a pas encore confirmé
+      // Le webhook créera le RDV plus tard de toute façon s'il est valide
+      return true;
+    } catch (error) {
+      console.error("Erreur lors de la vérification du statut du paiement:", error);
+      setWebhookStatus('failed');
+      setPaymentError("Erreur lors de la vérification du paiement. Veuillez nous contacter.");
+      return false;
+    }
+  };
+  
   // Permettre le défilement sur cette page
   useEffect(() => {
     document.documentElement.style.position = 'relative';
@@ -141,10 +196,6 @@ export default function BookingClient() {
     // Stocker le RDV temporaire dans l'état
     setAppointment(tempAppointment);
     
-    // On pourrait stocker le RDV temporaire dans un état si nécessaire
-    // pour l'utiliser à l'étape suivante
-    console.log("Rendez-vous temporaire créé:", tempAppointment);
-    
     // Passer directement à l'étape suivante
     setCurrentStep('info');
     console.log("Passage à l'étape 'info'");
@@ -160,50 +211,36 @@ export default function BookingClient() {
   // Gestion du succès du paiement
   const handlePaymentSuccess = async (paymentIntentId: string) => {
     try {
-      //setPaymentIntentId(paymentIntentId);
+      // Stocker l'ID du paiement
+      setPaymentIntentId(paymentIntentId);
+      console.log("Paiement réussi, ID:", paymentIntentId);
       
-      // Créer le RDV dans Firebase
-      if (selectedService && selectedDate && selectedTime && selectedStaffId) {
-        // Calculer l'heure de fin en fonction de la durée du service
-        const [hours, minutes] = selectedTime.split(':').map(Number);
-        const startDate = new Date(selectedDate);
-        startDate.setHours(hours, minutes, 0, 0);
-        
-        const endDate = new Date(startDate);
-        endDate.setMinutes(endDate.getMinutes() + selectedService.duration);
-        
-        const rdvData = {
-          serviceId: selectedService.id,
-          serviceTitle: selectedService.title,
-          serviceDuration: selectedService.duration,
-          staffId: selectedStaffId,
-          start: startDate.toISOString(),
-          end: endDate.toISOString(),
-          clientName: clientName,
-          clientPhone: clientPhone,
-          clientEmail: clientEmail || undefined,
-          price: selectedService.discountedPrice || selectedService.originalPrice,
-          paymentIntentId: paymentIntentId,
-          paymentStatus: 'completed',
-        };
-        
-        // Créer le RDV dans Firebase
-        const newRdvId = await createRdv(rdvData);
-        setBookingId(newRdvId);
-        
-        // Passer à l'étape de confirmation
+      // Passer à l'étape de traitement pour attendre la confirmation du webhook
+      setCurrentStep('processing');
+      setWebhookStatus('pending');
+      
+      // Vérifier périodiquement le statut du paiement via le webhook
+      const isConfirmed = await checkPaymentStatus(paymentIntentId);
+      
+      // Si le paiement est confirmé, passer à l'étape de confirmation
+      if (isConfirmed) {
         setCurrentStep('confirmation');
+      } else {
+        // Sinon, afficher l'erreur
+        setCurrentStep('error');
       }
     } catch (error) {
-      console.error("Erreur lors de la création du rendez-vous:", error);
-      // Gérer l'erreur
+      console.error("Erreur lors de la gestion du paiement:", error);
+      setPaymentError(error instanceof Error ? error.message : "Erreur lors du traitement du paiement");
+      setCurrentStep('error');
     }
   };
 
   // Gestion des erreurs de paiement
   const handlePaymentError = (error: string) => {
     console.error("Erreur de paiement:", error);
-    // Vous pourriez afficher un message d'erreur ici
+    setPaymentError(error);
+    setCurrentStep('error');
   };
   
   // Revenir à l'étape précédente
@@ -216,15 +253,60 @@ export default function BookingClient() {
     setCurrentStep('datetime');
   };
   
-  // Utiliser les variables sélectionnées pour éviter les erreurs
+  // Formater la date pour l'affichage
+  const formatDate = (date: Date) => {
+    return format(date, 'EEEE d MMMM yyyy', { locale: fr });
+  };
+  
+  // Obtenir le nom du staff sélectionné
   const getStaffName = () => {
     if (!selectedStaffId) return "Sans préférence";
     const staff = staffMembers.find(s => s.id === selectedStaffId);
     return staff ? staff.id : "Coiffeur inconnu";
   };
   
+  // Fonctions helper pour obtenir les dates ISO
+  const getStartDateISOString = () => {
+    if (!selectedDate || !selectedTime) return '';
+    
+    const [hours, minutes] = selectedTime.split(':').map(Number);
+    const startDate = new Date(selectedDate);
+    startDate.setHours(hours, minutes, 0, 0);
+    
+    return startDate.toISOString();
+  };
+
+  const getEndDateISOString = () => {
+    if (!selectedDate || !selectedTime || !selectedService) return '';
+    
+    const [hours, minutes] = selectedTime.split(':').map(Number);
+    const startDate = new Date(selectedDate);
+    startDate.setHours(hours, minutes, 0, 0);
+    
+    const endDate = new Date(startDate);
+    endDate.setMinutes(endDate.getMinutes() + selectedService.duration);
+    
+    return endDate.toISOString();
+  };
+  
+  // Réinitialiser le processus de réservation
+  const resetBooking = () => {
+    setSelectedService(null);
+    setSelectedDate(null);
+    setSelectedTime(null);
+    setSelectedStaffId(null);
+    setClientName('');
+    setClientPhone('');
+    setClientEmail('');
+    setPaymentIntentId(null);
+    setBookingId(null);
+    setWebhookStatus(null);
+    setPaymentError(null);
+    setCurrentStep('service');
+  };
+  
   return (
-    <section
+    <div
       style={{
         background: 'transparent',
         fontFamily: "var(--font-jetbrains-mono)",
@@ -247,19 +329,21 @@ export default function BookingClient() {
           
           {/* Contenu */}
           <div className="p-4">
-            {/* Stepper */}
-            <BookingStepper 
-              currentStep={
-                currentStep === 'service' 
-                  ? 1 
-                  : currentStep === 'datetime' 
-                  ? 2 
-                  : currentStep === 'info' 
-                  ? 3 
-                  : 4
-              } 
-              steps={steps} 
-            />
+            {/* Stepper - Masqué pendant le traitement, la confirmation et l'erreur */}
+            {(currentStep === 'service' || currentStep === 'datetime' || currentStep === 'info' || currentStep === 'payment') && (
+              <BookingStepper 
+                currentStep={
+                  currentStep === 'service' 
+                    ? 1 
+                    : currentStep === 'datetime' 
+                    ? 2 
+                    : currentStep === 'info' 
+                    ? 3 
+                    : 4
+                } 
+                steps={steps} 
+              />
+            )}
             
             {/* Étape active */}
             <div className="mt-6">
@@ -273,6 +357,7 @@ export default function BookingClient() {
                 <>
                   {/* Utiliser une clé unique pour forcer le rechargement du composant lors du changement d'étape */}
                   <div key={`step-${currentStep}`}>
+                    {/* Étape 1: Sélection du service */}
                     {currentStep === 'service' && (
                       <ServiceSelection 
                         onServiceSelected={handleServiceSelected} 
@@ -280,6 +365,7 @@ export default function BookingClient() {
                       />
                     )}
                     
+                    {/* Étape 2: Sélection de la date et heure */}
                     {currentStep === 'datetime' && selectedService && (
                       <DateTimeSelection
                         serviceId={selectedService.id}
@@ -295,6 +381,7 @@ export default function BookingClient() {
                       />
                     )}
                     
+                    {/* Étape 3: Informations client */}
                     {currentStep === 'info' && (
                       <div className="py-8">
                         <h2 className="text-xl font-medium mb-6">Informations de contact</h2>
@@ -305,7 +392,7 @@ export default function BookingClient() {
                             <h3 className="text-lg font-medium mb-2">Résumé de votre réservation</h3>
                             <ul className="space-y-2">
                               <li><span className="text-white/60">Service:</span> {selectedService.title}</li>
-                              <li><span className="text-white/60">Date:</span> {format(selectedDate, 'EEEE d MMMM yyyy', { locale: fr })}</li>
+                              <li><span className="text-white/60">Date:</span> {formatDate(selectedDate)}</li>
                               <li><span className="text-white/60">Heure:</span> {selectedTime}</li>
                               <li><span className="text-white/60">Coiffeur:</span> {getStaffName()}</li>
                               <li><span className="text-white/60">Prix:</span> {selectedService.discountedPrice || selectedService.originalPrice}€</li>
@@ -373,12 +460,20 @@ export default function BookingClient() {
                       </div>
                     )}
 
+                    {/* Étape 4: Paiement */}
                     {currentStep === 'payment' && selectedService && (
                       <StripeProvider>
                         <PaymentForm
                           amount={selectedService.discountedPrice || selectedService.originalPrice}
+                          serviceId={selectedService.id}
                           serviceTitle={selectedService.title}
+                          serviceDuration={selectedService.duration}
+                          staffId={selectedStaffId || ''}
+                          startTime={getStartDateISOString()}
+                          endTime={getEndDateISOString()}
                           clientName={clientName}
+                          clientPhone={clientPhone}
+                          clientEmail={clientEmail}
                           onPaymentSuccess={handlePaymentSuccess}
                           onPaymentError={handlePaymentError}
                         />
@@ -393,7 +488,23 @@ export default function BookingClient() {
                         </div>
                       </StripeProvider>
                     )}
+                    
+                    {/* Étape intermédiaire: Traitement du paiement */}
+                    {currentStep === 'processing' && (
+                      <div className="py-12 text-center">
+                        <div className="w-16 h-16 border-4 border-t-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-6"></div>
+                        
+                        <h2 className="text-xl font-medium mb-4">Traitement en cours...</h2>
+                        <p className="text-white/80 mb-6">
+                          Votre paiement est en cours de traitement. Merci de patienter quelques instants...
+                        </p>
+                        <p className="text-white/60 text-sm mb-6">
+                          Ne fermez pas cette fenêtre pendant le traitement.
+                        </p>
+                      </div>
+                    )}
 
+                    {/* Étape finale: Confirmation */}
                     {currentStep === 'confirmation' && (
                       <div className="py-12 text-center">
                         <svg
@@ -413,8 +524,23 @@ export default function BookingClient() {
                         
                         <h2 className="text-xl font-medium mb-4">Réservation confirmée !</h2>
                         <p className="text-white/80 mb-6">
-                          Votre rendez-vous a bien été enregistré. Vous recevrez bientôt une confirmation.
+                          Votre rendez-vous a bien été enregistré. Vous recevrez une confirmation par SMS.
                         </p>
+                        
+                        {/* Résumé de la réservation */}
+                        {selectedService && selectedDate && selectedTime && (
+                          <div className="bg-black/20 backdrop-blur-sm rounded-lg p-4 mb-6 max-w-sm mx-auto text-left">
+                            <h3 className="text-lg font-medium mb-2">Détails de votre rendez-vous</h3>
+                            <ul className="space-y-2 text-sm">
+                              <li><span className="text-white/60">Service:</span> {selectedService.title}</li>
+                              <li><span className="text-white/60">Date:</span> {formatDate(selectedDate)}</li>
+                              <li><span className="text-white/60">Heure:</span> {selectedTime}</li>
+                              <li><span className="text-white/60">Coiffeur:</span> {getStaffName()}</li>
+                              <li><span className="text-white/60">Prix:</span> {selectedService.discountedPrice || selectedService.originalPrice}€</li>
+                              {bookingId && <li><span className="text-white/60">Référence:</span> {bookingId}</li>}
+                            </ul>
+                          </div>
+                        )}
                         
                         <button 
                           className="bg-white text-purple-700 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
@@ -424,6 +550,47 @@ export default function BookingClient() {
                         </button>
                       </div>
                     )}
+                    
+                    {/* Étape d'erreur */}
+                    {currentStep === 'error' && (
+                      <div className="py-12 text-center">
+                        <svg
+                          className="w-16 h-16 text-red-500 mx-auto mb-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        
+                        <h2 className="text-xl font-medium mb-4">Une erreur est survenue</h2>
+                        <p className="text-white/80 mb-6">
+                          {paymentError || "Nous n'avons pas pu traiter votre paiement. Veuillez réessayer ou nous contacter."}
+                        </p>
+                        
+                        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                          <button 
+                            className="backdrop-blur-sm border border-white/20 hover:bg-white/10 text-white py-2 px-4 rounded-lg transition-colors"
+                            onClick={() => setCurrentStep('payment')}
+                          >
+                            Réessayer
+                          </button>
+                          
+                          <button 
+                            className="bg-white text-purple-700 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
+                            onClick={resetBooking}
+                          >
+                            Recommencer
+                          </button>
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </>
               )}
@@ -431,6 +598,6 @@ export default function BookingClient() {
           </div>
         </motion.div>
       </div>
-    </section>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
+// src/app/api/webhooks/stripe/route.ts
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { updateRdv } from '@/app/lib/firebase/service';
+import { createRdv } from '@/app/lib/firebase/service';
 
 // Initialiser l'instance Stripe avec la clé secrète
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -44,31 +45,75 @@ export async function POST(request: Request) {
         // Le paiement a réussi
         const paymentIntent = event.data.object as Stripe.PaymentIntent;
         
-        // Mettre à jour le statut dans Firebase
-        if (paymentIntent.metadata.rdvId) {
-          await updateRdv(paymentIntent.metadata.rdvId, {
-            paymentStatus: 'completed',
-            paid: true,
+        // Vérifier si nous avons toutes les métadonnées nécessaires
+        if (
+          paymentIntent.metadata.serviceId &&
+          paymentIntent.metadata.serviceTitle &&
+          paymentIntent.metadata.serviceDuration &&
+          paymentIntent.metadata.staffId &&
+          paymentIntent.metadata.startTime &&
+          paymentIntent.metadata.endTime &&
+          paymentIntent.metadata.clientName
+        ) {
+          try {
+            // Créer le RDV directement avec le statut payé
+            const rdvData = {
+              serviceId: paymentIntent.metadata.serviceId,
+              serviceTitle: paymentIntent.metadata.serviceTitle,
+              serviceDuration: parseInt(paymentIntent.metadata.serviceDuration),
+              staffId: paymentIntent.metadata.staffId,
+              start: paymentIntent.metadata.startTime,
+              end: paymentIntent.metadata.endTime,
+              clientName: paymentIntent.metadata.clientName,
+              clientPhone: paymentIntent.metadata.clientPhone,
+              clientEmail: paymentIntent.metadata.clientEmail || undefined,
+              price: paymentIntent.amount / 100, // Convertir les centimes en euros
+              paymentIntentId: paymentIntent.id,
+              paymentStatus: 'completed',
+              paid: true,
+            };
+            
+            const rdvId = await createRdv(rdvData);
+            console.log(`RDV créé avec succès après paiement, ID: ${rdvId}`);
+            
+            // Vous pourriez également envoyer un email ou un SMS de confirmation ici
+            
+            return NextResponse.json({ 
+              received: true, 
+              success: true,
+              bookingId: rdvId
+            });
+          } catch (error) {
+            console.error('Erreur lors de la création du RDV:', error);
+            return NextResponse.json({ 
+              received: true, 
+              success: false,
+              error: 'Erreur lors de la création du RDV'
+            });
+          }
+        } else {
+          console.error('Métadonnées manquantes dans le payment intent:', paymentIntent.metadata);
+          return NextResponse.json({ 
+            received: true, 
+            success: false,
+            error: 'Métadonnées manquantes dans le payment intent'
           });
-          console.log(`Paiement confirmé pour rdv: ${paymentIntent.metadata.rdvId}`);
         }
         break;
         
       case 'payment_intent.payment_failed':
-        // Le paiement a échoué
-        const failedPayment = event.data.object as Stripe.PaymentIntent;
-        
-        if (failedPayment.metadata.rdvId) {
-          await updateRdv(failedPayment.metadata.rdvId, {
-            paymentStatus: 'failed',
-          });
-          console.log(`Echec de paiement pour rdv: ${failedPayment.metadata.rdvId}`);
-        }
-        break;
+        // Le paiement a échoué - aucune action nécessaire car nous ne créons pas de RDV
+        console.log(`Échec de paiement, aucun RDV créé. PaymentIntent ID: ${event.data.object.id}`);
+        return NextResponse.json({ 
+          received: true, 
+          success: false,
+          error: 'Échec du paiement'
+        });
         
       default:
         // Ignorer les autres événements
         console.log(`Événement webhook non traité: ${event.type}`);
+        return NextResponse.json({ received: true });
     }
 
     // Répondre pour confirmer la réception

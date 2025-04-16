@@ -6,16 +6,30 @@ import { motion } from 'framer-motion';
 
 interface PaymentFormProps {
   amount: number;
+  serviceId: string;
   serviceTitle: string;
+  serviceDuration: number;
+  staffId: string;
+  startTime: string; // Date ISO
+  endTime: string;   // Date ISO
   clientName: string;
+  clientPhone: string;
+  clientEmail?: string;
   onPaymentSuccess: (paymentIntentId: string) => void;
   onPaymentError: (error: string) => void;
 }
 
 export default function PaymentForm({
   amount,
+  serviceId,
   serviceTitle,
+  serviceDuration,
+  staffId,
+  startTime,
+  endTime,
   clientName,
+  clientPhone,
+  clientEmail,
   onPaymentSuccess,
   onPaymentError
 }: PaymentFormProps) {
@@ -37,8 +51,15 @@ export default function PaymentForm({
           },
           body: JSON.stringify({
             amount,
+            serviceId,
             serviceTitle,
+            serviceDuration,
+            staffId,
+            startTime,
+            endTime,
             clientName,
+            clientPhone,
+            clientEmail,
           }),
         });
 
@@ -60,7 +81,19 @@ export default function PaymentForm({
     if (amount > 0) {
       createPaymentIntent();
     }
-  }, [amount, serviceTitle, clientName, onPaymentError]);
+  }, [
+    amount, 
+    serviceId, 
+    serviceTitle, 
+    serviceDuration, 
+    staffId, 
+    startTime, 
+    endTime, 
+    clientName, 
+    clientPhone, 
+    clientEmail, 
+    onPaymentError
+  ]); // Ajout de onPaymentError dans les dépendances
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
