@@ -77,6 +77,33 @@ export default function DateTimeSelection({
     setShowAllSlots(false);
   }, [selectedDate, selectedStaffId, salonConfig, staffAvailabilities, existingRdvs, serviceDuration]);
 
+  function getRandomAvailableStaffIdForSlot(
+    date: Date,
+    time: string,
+    duration: number,
+    salonConfig: SalonConfig,
+    staffAvailabilities: StaffAvailability[],
+    existingRdvs: Rdv[]
+  ): string | null {
+    const availableStaff = staffAvailabilities.filter((staff) => {
+      const slots = generateAvailableTimeSlots(
+        date,
+        staff.staffId,
+        duration,
+        salonConfig,
+        staffAvailabilities,
+        existingRdvs
+      );
+      return slots.includes(time);
+    });
+  
+    if (availableStaff.length === 0) return null;
+  
+    const randomIndex = Math.floor(Math.random() * availableStaff.length);
+    return availableStaff[randomIndex].staffId;
+  }
+  
+
   useEffect(() => {
     if (selectedDate) {
       const hasSlots = salonConfig ? checkDateHasAvailableSlots(
@@ -129,13 +156,22 @@ export default function DateTimeSelection({
 
   const handleTimeSelect = (time: string) => {
     setSelectedTime(time);
-  };
-
-  const handleContinue = () => {
-    if (selectedDate && selectedTime) {
-      onSelectDateTime(selectedDate, selectedTime, selectedStaffId);
+  
+    if (selectedDate) {
+      const staffIdToUse = selectedStaffId ?? getRandomAvailableStaffIdForSlot(
+        selectedDate,
+        time,
+        serviceDuration,
+        salonConfig!,
+        staffAvailabilities,
+        existingRdvs
+      );
+  
+      onSelectDateTime(selectedDate, time, staffIdToUse);
     }
   };
+  
+
 
   const handleStaffChange = (staffId: string | null) => {
     setSelectedStaffId(staffId);
@@ -250,14 +286,6 @@ export default function DateTimeSelection({
           );
         })}
       </div>
-
-      {selectedTime && selectedDate && (
-        <div className="mt-6 text-center">
-          <button className="bg-white text-purple-900 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition" onClick={handleContinue}>
-            Continuer
-          </button>
-        </div>
-      )}
     </div>
   );
 }

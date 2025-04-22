@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import StripeProvider from '../../lib/stripe/StripeProvider';
@@ -13,6 +12,7 @@ import { getSalonConfig, getStaffMembers, getStaffAvailability, getRdvsByDateRan
 import type { SalonConfig, StaffMember, StaffAvailability, Rdv, Service } from '../../lib/firebase/types';
 import { addDays } from 'date-fns';
 import StepInfoContact from './StepInfoContact';
+import { AnimatePresence, motion } from 'framer-motion';
 
 // Étapes du processus de réservation
 type BookingStep = 'service' | 'datetime' | 'info' | 'payment' | 'processing' | 'confirmation' | 'error';
@@ -316,17 +316,13 @@ export default function BookingClient() {
       }}
     >
       <div className="w-full max-w-md mx-auto px-4 py-8 flex flex-col items-center">
-        {/* Conteneur principal avec fond transparent */}
         <motion.div
           className="w-full rounded-lg overflow-hidden backdrop-blur-sm shadow-lg"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-
-          {/* Contenu */}
           <div className="p-4">
-            {/* Stepper - Masqué pendant le traitement, la confirmation et l'erreur */}
             {(currentStep === 'service' || currentStep === 'datetime' || currentStep === 'info' || currentStep === 'payment') && (
               <BookingStepper 
                 currentStep={
@@ -341,29 +337,38 @@ export default function BookingClient() {
                 steps={steps} 
               />
             )}
-            
-            {/* Étape active */}
-            <div className="mt-6">
+  
+            <div className="mt-6 min-h-[300px]">
               {loading ? (
-                // État de chargement
                 <div className="py-12 text-center">
                   <div className="animate-pulse bg-white/10 h-8 w-32 rounded-lg mx-auto mb-4"></div>
                   <div className="animate-pulse bg-white/10 h-40 w-full rounded-lg mx-auto"></div>
                 </div>
               ) : (
-                <>
-                  {/* Utiliser une clé unique pour forcer le rechargement du composant lors du changement d'étape */}
-                  <div key={`step-${currentStep}`}>
-                    {/* Étape 1: Sélection du service */}
-                    {currentStep === 'service' && (
+                <AnimatePresence mode="wait">
+                  {currentStep === 'service' && (
+                    <motion.div
+                      key="service"
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -50 }}
+                      transition={{ duration: 0.4 }}
+                    >
                       <ServiceSelection 
                         onServiceSelected={handleServiceSelected} 
                         selectedServiceId={selectedService?.id || null}
                       />
-                    )}
-                    
-                    {/* Étape 2: Sélection de la date et heure */}
-                    {currentStep === 'datetime' && selectedService && (
+                    </motion.div>
+                  )}
+  
+                  {currentStep === 'datetime' && selectedService && (
+                    <motion.div
+                      key="datetime"
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -50 }}
+                      transition={{ duration: 0.4 }}
+                    >
                       <DateTimeSelection
                         serviceId={selectedService.id}
                         serviceTitle={selectedService.title}
@@ -376,43 +381,55 @@ export default function BookingClient() {
                         existingRdvs={existingRdvs}
                         staffMembers={staffMembers}
                       />
-                    )}
-                    
-                    {/* Étape 3: Informations client */}
-                    {currentStep === 'info' && selectedService && selectedDate && selectedTime && (
-  <StepInfoContact
-    selectedService={selectedService}
-    selectedDate={selectedDate}
-    selectedTime={selectedTime}
-    selectedStaffId={selectedStaffId}
-    staffMembers={staffMembers}
-    clientName={clientName}
-    clientPhone={clientPhone}
-    clientEmail={clientEmail}
-    setClientName={setClientName}
-    setClientPhone={setClientPhone}
-    setClientEmail={setClientEmail}
-    onBack={handleBackToDateTime}
-    onProceed={handleProceedToPayment}
-  />
-)}
-
-
-                    {/* Étape 4: Paiement */}
-                    {currentStep === 'payment' && selectedService && (
-                      
+                    </motion.div>
+                  )}
+  
+                  {currentStep === 'info' && selectedService && selectedDate && selectedTime && (
+                    <motion.div
+                      key="info"
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -50 }}
+                      transition={{ duration: 0.4 }}
+                    >
+                      <StepInfoContact
+                        selectedService={selectedService}
+                        selectedDate={selectedDate}
+                        selectedTime={selectedTime}
+                        selectedStaffId={selectedStaffId}
+                        staffMembers={staffMembers}
+                        clientName={clientName}
+                        clientPhone={clientPhone}
+                        clientEmail={clientEmail}
+                        setClientName={setClientName}
+                        setClientPhone={setClientPhone}
+                        setClientEmail={setClientEmail}
+                        onBack={handleBackToDateTime}
+                        onProceed={handleProceedToPayment}
+                      />
+                    </motion.div>
+                  )}
+  
+                  {currentStep === 'payment' && selectedService && (
+                    <motion.div
+                      key="payment"
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{ opacity: 0, x: -50 }}
+                      transition={{ duration: 0.4 }}
+                    >
                       <StripeProvider>
                         <div className="text-center mb-6">
-        <button
-          className="flex items-center justify-center gap-1 text-sm text-white/70 hover:text-white mx-auto mb-3"
-          onClick={() => setCurrentStep('info')}
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-          Retour aux informations
-        </button>
-      </div>
+                          <button
+                            className="flex items-center justify-center gap-1 text-sm text-white/70 hover:text-white mx-auto mb-3"
+                            onClick={() => setCurrentStep('info')}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                            Retour aux informations
+                          </button>
+                        </div>
                         <PaymentForm
                           amount={selectedService.discountedPrice || selectedService.originalPrice}
                           serviceId={selectedService.id}
@@ -428,13 +445,19 @@ export default function BookingClient() {
                           onPaymentError={handlePaymentError}
                         />
                       </StripeProvider>
-                    )}
-                    
-                    {/* Étape intermédiaire: Traitement du paiement */}
-                    {currentStep === 'processing' && (
+                    </motion.div>
+                  )}
+  
+                  {currentStep === 'processing' && (
+                    <motion.div
+                      key="processing"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
                       <div className="py-12 text-center">
                         <div className="w-16 h-16 border-4 border-t-4 border-white/30 border-t-white rounded-full animate-spin mx-auto mb-6"></div>
-                        
                         <h2 className="text-xl font-medium mb-4">Traitement en cours...</h2>
                         <p className="text-white/80 mb-6">
                           Votre paiement est en cours de traitement. Merci de patienter quelques instants...
@@ -443,32 +466,25 @@ export default function BookingClient() {
                           Ne fermez pas cette fenêtre pendant le traitement.
                         </p>
                       </div>
-                    )}
-
-                    {/* Étape finale: Confirmation */}
-                    {currentStep === 'confirmation' && (
+                    </motion.div>
+                  )}
+  
+                  {currentStep === 'confirmation' && (
+                    <motion.div
+                      key="confirmation"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
                       <div className="py-12 text-center">
-                        <svg
-                          className="w-16 h-16 text-green-400 mx-auto mb-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
+                        <svg className="w-16 h-16 text-green-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        
                         <h2 className="text-xl font-medium mb-4">Réservation confirmée !</h2>
                         <p className="text-white/80 mb-6">
                           Votre rendez-vous a bien été enregistré. Vous recevrez une confirmation par SMS.
                         </p>
-                        
-                        {/* Résumé de la réservation */}
                         {selectedService && selectedDate && selectedTime && (
                           <div className="bg-black/20 backdrop-blur-sm rounded-lg p-4 mb-6 max-w-sm mx-auto text-left">
                             <h3 className="text-lg font-medium mb-2">Détails de votre rendez-vous</h3>
@@ -482,7 +498,6 @@ export default function BookingClient() {
                             </ul>
                           </div>
                         )}
-                        
                         <button 
                           className="bg-white text-purple-900 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
                           onClick={() => window.location.href = '/'}
@@ -490,31 +505,25 @@ export default function BookingClient() {
                           Retour à l&apos;accueil
                         </button>
                       </div>
-                    )}
-                    
-                    {/* Étape d'erreur */}
-                    {currentStep === 'error' && (
+                    </motion.div>
+                  )}
+  
+                  {currentStep === 'error' && (
+                    <motion.div
+                      key="error"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
                       <div className="py-12 text-center">
-                        <svg
-                          className="w-16 h-16 text-red-500 mx-auto mb-4"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
+                        <svg className="w-16 h-16 text-red-500 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
-                        
                         <h2 className="text-xl font-medium mb-4">Une erreur est survenue</h2>
                         <p className="text-white/80 mb-6">
                           {paymentError || "Nous n'avons pas pu traiter votre paiement. Veuillez réessayer ou nous contacter."}
                         </p>
-                        
                         <div className="flex flex-col sm:flex-row gap-4 justify-center">
                           <button 
                             className="backdrop-blur-sm border border-white/20 hover:bg-white/10 text-white py-2 px-4 rounded-lg transition-colors"
@@ -522,7 +531,6 @@ export default function BookingClient() {
                           >
                             Réessayer
                           </button>
-                          
                           <button 
                             className="bg-white text-purple-900 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
                             onClick={resetBooking}
@@ -531,9 +539,9 @@ export default function BookingClient() {
                           </button>
                         </div>
                       </div>
-                    )}
-                  </div>
-                </>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               )}
             </div>
           </div>
@@ -541,4 +549,5 @@ export default function BookingClient() {
       </div>
     </div>
   );
+  
 }

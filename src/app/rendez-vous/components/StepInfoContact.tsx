@@ -78,7 +78,7 @@ export default function StepInfoContact({
           <label htmlFor="name" className="block text-sm mb-1">Nom complet</label>
           <input
             id="name"
-            className="w-full px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50"
+            className="w-full px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none"
             placeholder="Jean Dupont"
             value={clientName}
             onChange={(e) => setClientName(e.target.value)}
@@ -91,7 +91,7 @@ export default function StepInfoContact({
           <input
             id="phone"
             type="tel"
-            className="w-full px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50"
+            className="w-full px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none"
             placeholder="06 12 34 56 78"
             value={clientPhone}
             onChange={(e) => setClientPhone(e.target.value)}
@@ -104,7 +104,7 @@ export default function StepInfoContact({
           <input
             id="email"
             type="email"
-            className="w-full px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50"
+            className="w-full px-4 py-2 rounded-lg bg-white/10 backdrop-blur-sm border border-white/20 text-white placeholder-white/50 focus:outline-none"
             placeholder="jean@mail.com"
             value={clientEmail}
             onChange={(e) => setClientEmail(e.target.value)}

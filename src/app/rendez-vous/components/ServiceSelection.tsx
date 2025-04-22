@@ -17,16 +17,12 @@ export default function ServiceSelection({ onServiceSelected, selectedServiceId 
   const [selectedService, setSelectedService] = useState<Service | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Charger les sections et services au chargement du composant
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        console.log("Chargement des sections et services...");
-        
         const fetchedSections = await getSections();
         setSections(fetchedSections);
-        console.log(`${fetchedSections.length} sections chargées`);
 
         const servicesMap: Record<string, Service[]> = {};
         for (const section of fetchedSections) {
@@ -44,25 +40,16 @@ export default function ServiceSelection({ onServiceSelected, selectedServiceId 
     fetchData();
   }, []);
 
-  // Fonction pour sélectionner un service
+  // 👉 Nouveau comportement : sélection = passage à l’étape suivante
   const handleSelectService = (service: Service) => {
-    console.log("Service sélectionné dans ServiceSelection:", service);
+    console.log("Service sélectionné :", service);
     setSelectedService(service);
-    // Ne pas appeler onServiceSelected ici, attendre le clic sur "Continuer"
+    onServiceSelected(service); // ⬅️ appel direct
   };
 
-  // Fonction pour passer à l'étape suivante
-  const handleContinue = () => {
-    if (selectedService) {
-      console.log("Appel de onServiceSelected avec:", selectedService);
-      onServiceSelected(selectedService);
-    }
-  };
-
-  // Si un ID de service est déjà sélectionné, trouver le service correspondant
+  // Pré-sélection si on revient en arrière
   useEffect(() => {
     if (selectedServiceId) {
-      // Parcourir tous les services pour trouver celui qui correspond à l'ID
       for (const sectionId in servicesBySection) {
         const service = servicesBySection[sectionId].find(s => s.id === selectedServiceId);
         if (service) {
@@ -91,27 +78,12 @@ export default function ServiceSelection({ onServiceSelected, selectedServiceId 
           services={servicesBySection[section.id] || []}
           isOpen={openSectionId === section.id}
           onToggle={() => {
-            if (openSectionId === section.id) {
-              setOpenSectionId(null);
-            } else {
-              setOpenSectionId(section.id);
-            }
+            setOpenSectionId(prev => (prev === section.id ? null : section.id));
           }}
           selectedServiceId={selectedService?.id || null}
           onSelectService={handleSelectService}
         />
       ))}
-      
-      {selectedService && (
-        <div className="text-center mt-6">
-          <button
-            className="bg-white text-purple-900 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition"
-            onClick={handleContinue}
-          >
-            Continuer
-          </button>
-        </div>
-      )}
     </div>
   );
 }

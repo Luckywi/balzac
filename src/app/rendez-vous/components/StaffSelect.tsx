@@ -117,35 +117,43 @@ export default function StaffSelect({
           >
             {/* Option "Sans préférence" */}
             <motion.button
-              variants={optionVariants}
-              className={`w-full text-left px-4 py-3 hover:bg-gray-200/90 transition-colors ${
-                selectedStaffId === null ? 'bg-gray-200/90 text-purple-900 font-medium' : 'text-purple-900'
-              }`}
-              onClick={() => {
-                onChange(null);
-                setIsOpen(false);
-              }}
-            >
-              <div className="flex items-center">
-                <div className="rounded-full bg-gray-300/90 w-8 h-8 flex items-center justify-center mr-3">
-                  <svg 
-                    xmlns="http://www.w3.org/2000/svg" 
-                    width="16" 
-                    height="16" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="currentColor" 
-                    strokeWidth="2" 
-                    strokeLinecap="round" 
-                    strokeLinejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <line x1="8" y1="12" x2="16" y2="12"></line>
-                  </svg>
-                </div>
-                Sans préférence
-              </div>
-            </motion.button>
+  variants={optionVariants}
+  className={`w-full text-left px-4 py-3 hover:bg-gray-200/90 transition-colors ${
+    selectedStaffId === null ? 'bg-gray-200/90 text-purple-900 font-medium' : 'text-purple-900'
+  }`}
+  onClick={() => {
+    onChange(null);
+    setIsOpen(false);
+  }}
+>
+  <div className="flex items-center justify-between">
+    <div className="flex items-center">
+      <div className="rounded-full bg-gray-300/90 w-8 h-8 flex items-center justify-center mr-3">
+        <svg 
+          xmlns="http://www.w3.org/2000/svg" 
+          width="16" 
+          height="16" 
+          viewBox="0 0 24 24" 
+          fill="none" 
+          stroke="currentColor" 
+          strokeWidth="2" 
+          strokeLinecap="round" 
+          strokeLinejoin="round"
+        >
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+      </div>
+      Sans préférence
+    </div>
+    {selectedStaffId === null && (
+      <svg className="w-4 h-4 text-purple-900" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+      </svg>
+    )}
+  </div>
+</motion.button>
+
 
             {/* Affichage du debugging pour vérifier les données */}
             {staffMembers.length === 0 && (
@@ -157,16 +165,17 @@ export default function StaffSelect({
             {/* Options des staffs */}
             {staffMembers.map((staff) => (
               <motion.button
-                key={staff.id}
-                variants={optionVariants}
-                className={`w-full text-left px-4 py-3 hover:bg-gray-200/90 transition-colors ${
-                  selectedStaffId === staff.id ? 'bg-gray-200/90 text-purple-900 font-medium' : 'text-purple-900'
-                }`}
-                onClick={() => {
-                  onChange(staff.id);
-                  setIsOpen(false);
-                }}
-              >
+              key={staff.id}
+              variants={optionVariants}
+              className={`w-full text-left px-4 py-3 hover:bg-gray-200/90 transition-colors ${
+                selectedStaffId === staff.id ? 'bg-gray-200/90 text-purple-900 font-medium' : 'text-purple-900'
+              }`}
+              onClick={() => {
+                onChange(staff.id);
+                setIsOpen(false);
+              }}
+            >
+              <div className="flex items-center justify-between">
                 <div className="flex items-center">
                   {staff.photoURL ? (
                     <div className="w-8 h-8 rounded-full overflow-hidden mr-3 bg-gray-300/90">
@@ -197,15 +206,18 @@ export default function StaffSelect({
                     </div>
                   )}
                   <div>
-                    <div className="font-medium">
-                      {staff.name || `${staff.id}`}
-                    </div>
-                    {staff.role && (
-                      <div className="text-xs text-purple-900">{staff.role}</div>
-                    )}
+                    <div className="font-medium">{staff.name || staff.id}</div>
+                    {staff.role && <div className="text-xs text-purple-900">{staff.role}</div>}
                   </div>
                 </div>
-              </motion.button>
+                {selectedStaffId === staff.id && (
+                  <svg className="w-4 h-4 text-purple-900" fill="none" stroke="currentColor" strokeWidth="3" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                )}
+              </div>
+            </motion.button>
+            
             ))}
           </motion.div>
         )}

@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect } from 'react';
 import Link from 'next/link';
 import TabNavigation from '../components/TabNavigation';
 import BookingClient from './components/BookingClient';
 
 export default function RdvClient() {
-
   // Images du salon pour le carrousel
   const salonImages = [
     {
@@ -30,79 +28,6 @@ export default function RdvClient() {
       alt: "Intérieur élégant du salon Le Balzac avec décoration moderne"
     },
   ];
-
-  useEffect(() => {
-    const iframe = document.getElementById('booking-frame') as HTMLIFrameElement;
-    let resizeTimeout: NodeJS.Timeout;
-    let currentStep = 1;
-
-    function updateIframeHeight(height: number) {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        if (height > 100) { // Vérification de sécurité
-          iframe.style.height = `${height}px`;
-        } else {
-          iframe.style.height = '300px'; // Hauteur minimale par défaut
-        }
-      }, 50);
-    }
-
-    function handleMessage(event: MessageEvent) {
-      if (event.origin !== 'https://booking-frame2.vercel.app') return;
-
-      if (event.data?.type === 'pageChange') {
-        currentStep = event.data.step;
-        // On force une réinitialisation de la hauteur
-        iframe.style.height = '300px';
-        // On demande une nouvelle mesure après un court délai
-        setTimeout(() => {
-          requestHeight();
-        }, 100);
-      }
-      
-      if (event.data?.type === 'resize') {
-        const newHeight = event.data.height || 300;
-        updateIframeHeight(newHeight);
-      }
-    }
-
-    function requestHeight() {
-      iframe?.contentWindow?.postMessage({ 
-        type: 'requestHeight',
-        currentStep: currentStep
-      }, 'https://booking-frame2.vercel.app');
-    }
-
-
-    window.addEventListener('message', handleMessage);
-
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, []);
-
-  // Permettre le défilement sur cette page
-  useEffect(() => {
-    // Appliquer directement les styles sans modifier cssText
-    document.documentElement.style.position = 'relative';
-    document.documentElement.style.height = 'auto';
-    document.documentElement.style.overflow = 'auto';
-    
-    document.body.style.position = 'relative';
-    document.body.style.height = 'auto';
-    document.body.style.overflow = 'auto';
-    
-    return () => {
-      // Rétablir les styles par défaut au démontage
-      document.documentElement.style.position = '';
-      document.documentElement.style.height = '';
-      document.documentElement.style.overflow = '';
-      
-      document.body.style.position = '';
-      document.body.style.height = '';
-      document.body.style.overflow = '';
-    };
-  }, []);
 
   return (
     <main
@@ -141,19 +66,12 @@ export default function RdvClient() {
 
         {/* Composant TabNavigation intégré */}
         <TabNavigation salonImages={salonImages} />
-        
-        {/* Wrapper avec un fond solide pour l'iframe */}
+
+        {/* Zone de réservation */}
         <div className="w-full mb-8 rounded-lg overflow-hidden bg-black/20 shadow-lg">
           <h2 className="text-lg text-white px-4 py-3 border-b border-white/10">Réservation</h2>
-          
-          {/* Conteneur pour l'iframe avec loading state */}
-          <div className="relative">
 
-              <div className="absolute inset-0 flex items-center justify-center bg-black/10 p-4">
-      
-              </div>
-        
-            
+          <div className="relative">
             <BookingClient />
           </div>
         </div>

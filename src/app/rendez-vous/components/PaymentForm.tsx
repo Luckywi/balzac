@@ -1,11 +1,17 @@
-"use client";
+'use client';
 
 import { useState, useEffect } from 'react';
-import { CardElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import {
+  CardElement,
+  PaymentRequestButtonElement,
+  useStripe,
+  useElements
+} from '@stripe/react-stripe-js';
+import type { PaymentRequest } from '@stripe/stripe-js';
 import { motion } from 'framer-motion';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Lock } from "lucide-react";
+import { Lock } from 'lucide-react';
 
 interface PaymentFormProps {
   amount: number;
@@ -38,9 +44,13 @@ export default function PaymentForm({
 }: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+
+  const [paymentRequest, setPaymentRequest] = useState<PaymentRequest | null>(null);
+  const [canMakePayment, setCanMakePayment] = useState(false);
 
   useEffect(() => {
     const createPaymentIntent = async () => {
@@ -79,6 +89,30 @@ export default function PaymentForm({
 
     if (amount > 0) createPaymentIntent();
   }, [amount, serviceId, serviceTitle, serviceDuration, staffId, startTime, endTime, clientName, clientPhone, clientEmail, onPaymentError]);
+
+  // Initialiser PaymentRequest (Apple Pay / Google Pay)
+  useEffect(() => {
+    if (!stripe) return;
+
+    const pr = stripe.paymentRequest({
+      country: 'FR',
+      currency: 'eur',
+      total: {
+        label: serviceTitle,
+        amount: Math.round(amount * 100),
+      },
+      requestPayerName: true,
+      requestPayerEmail: true,
+      requestPayerPhone: true,
+    });
+
+    pr.canMakePayment().then(result => {
+      if (result) {
+        setPaymentRequest(pr);
+        setCanMakePayment(true);
+      }
+    });
+  }, [stripe, amount, serviceTitle]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -134,6 +168,18 @@ export default function PaymentForm({
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Apple Pay / Google Pay */}
+        {canMakePayment && paymentRequest && (
+          <div className="mb-4">
+            <PaymentRequestButtonElement
+              options={{ paymentRequest }}
+              className="PaymentRequestButton"
+            />
+            <p className="text-xs text-white/60 text-center mt-2">Ou payez avec une carte bancaire</p>
+          </div>
+        )}
+
+        {/* CB classique */}
         <div className="p-4 bg-white/10 backdrop-blur-sm rounded-lg">
           <CardElement
             options={{
