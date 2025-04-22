@@ -12,6 +12,7 @@ import DateTimeSelection from './DateTimeSelection';
 import { getSalonConfig, getStaffMembers, getStaffAvailability, getRdvsByDateRange } from '../../lib/firebase/service';
 import type { SalonConfig, StaffMember, StaffAvailability, Rdv, Service } from '../../lib/firebase/types';
 import { addDays } from 'date-fns';
+import StepInfoContact from './StepInfoContact';
 
 // Étapes du processus de réservation
 type BookingStep = 'service' | 'datetime' | 'info' | 'payment' | 'processing' | 'confirmation' | 'error';
@@ -322,11 +323,7 @@ export default function BookingClient() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          {/* Titre */}
-          <div className="backdrop-blur-sm p-4 border-b border-white/10">
-            <h1 className="text-xl font-medium text-white">Réservation</h1>
-          </div>
-          
+
           {/* Contenu */}
           <div className="p-4">
             {/* Stepper - Masqué pendant le traitement, la confirmation et l'erreur */}
@@ -382,87 +379,40 @@ export default function BookingClient() {
                     )}
                     
                     {/* Étape 3: Informations client */}
-                    {currentStep === 'info' && (
-                      <div className="py-8">
-                        <h2 className="text-xl font-medium mb-6">Informations de contact</h2>
-                        
-                        {/* Résumé de la réservation qui utilise les variables sélectionnées */}
-                        {selectedService && selectedDate && selectedTime && (
-                          <div className="backdrop-blur-sm p-4 rounded-lg mb-6 text-left">
-                            <h3 className="text-lg font-medium mb-2">Résumé de votre réservation</h3>
-                            <ul className="space-y-2">
-                              <li><span className="text-white/60">Service:</span> {selectedService.title}</li>
-                              <li><span className="text-white/60">Date:</span> {formatDate(selectedDate)}</li>
-                              <li><span className="text-white/60">Heure:</span> {selectedTime}</li>
-                              <li><span className="text-white/60">Coiffeur:</span> {getStaffName()}</li>
-                              <li><span className="text-white/60">Prix:</span> {selectedService.discountedPrice || selectedService.originalPrice}€</li>
-                            </ul>
-                          </div>
-                        )}
-                        
-                        {/* Formulaire d'informations client */}
-                        <form className="space-y-4 mb-6">
-                          <div>
-                            <label htmlFor="clientName" className="block text-sm font-medium mb-1">Nom complet</label>
-                            <input
-                              type="text"
-                              id="clientName"
-                              className="w-full p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 text-white"
-                              placeholder="Votre nom et prénom"
-                              value={clientName}
-                              onChange={(e) => setClientName(e.target.value)}
-                              required
-                            />
-                          </div>
-                          
-                          <div>
-                            <label htmlFor="clientPhone" className="block text-sm font-medium mb-1">Téléphone</label>
-                            <input
-                              type="tel"
-                              id="clientPhone"
-                              className="w-full p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 text-white"
-                              placeholder="Votre numéro de téléphone"
-                              value={clientPhone}
-                              onChange={(e) => setClientPhone(e.target.value)}
-                              required
-                            />
-                          </div>
-                          
-                          <div>
-                            <label htmlFor="clientEmail" className="block text-sm font-medium mb-1">Email (optionnel)</label>
-                            <input
-                              type="email"
-                              id="clientEmail"
-                              className="w-full p-3 bg-white/10 backdrop-blur-sm rounded-lg border border-white/30 text-white"
-                              placeholder="Votre email"
-                              value={clientEmail}
-                              onChange={(e) => setClientEmail(e.target.value)}
-                            />
-                          </div>
-                        </form>
-                        
-                        <div className="flex items-center justify-between mt-8">
-                          <button 
-                            className="backdrop-blur-sm border border-white/20 hover:bg-white/10 text-white py-2 px-4 rounded-lg transition-colors"
-                            onClick={handleBackToDateTime}
-                          >
-                            Retour
-                          </button>
-                          
-                          <button 
-                            className="bg-white text-purple-700 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
-                            onClick={handleProceedToPayment}
-                            disabled={!clientName || !clientPhone}
-                          >
-                            Continuer au paiement
-                          </button>
-                        </div>
-                      </div>
-                    )}
+                    {currentStep === 'info' && selectedService && selectedDate && selectedTime && (
+  <StepInfoContact
+    selectedService={selectedService}
+    selectedDate={selectedDate}
+    selectedTime={selectedTime}
+    selectedStaffId={selectedStaffId}
+    staffMembers={staffMembers}
+    clientName={clientName}
+    clientPhone={clientPhone}
+    clientEmail={clientEmail}
+    setClientName={setClientName}
+    setClientPhone={setClientPhone}
+    setClientEmail={setClientEmail}
+    onBack={handleBackToDateTime}
+    onProceed={handleProceedToPayment}
+  />
+)}
+
 
                     {/* Étape 4: Paiement */}
                     {currentStep === 'payment' && selectedService && (
+                      
                       <StripeProvider>
+                        <div className="text-center mb-6">
+        <button
+          className="flex items-center justify-center gap-1 text-sm text-white/70 hover:text-white mx-auto mb-3"
+          onClick={() => setCurrentStep('info')}
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 18 9 12 15 6"></polyline>
+          </svg>
+          Retour aux informations
+        </button>
+      </div>
                         <PaymentForm
                           amount={selectedService.discountedPrice || selectedService.originalPrice}
                           serviceId={selectedService.id}
@@ -477,15 +427,6 @@ export default function BookingClient() {
                           onPaymentSuccess={handlePaymentSuccess}
                           onPaymentError={handlePaymentError}
                         />
-                        
-                        <div className="mt-4">
-                          <button 
-                            className="backdrop-blur-sm border border-white/20 hover:bg-white/10 text-white py-2 px-4 rounded-lg transition-colors"
-                            onClick={() => setCurrentStep('info')}
-                          >
-                            Retour aux informations
-                          </button>
-                        </div>
                       </StripeProvider>
                     )}
                     
@@ -543,7 +484,7 @@ export default function BookingClient() {
                         )}
                         
                         <button 
-                          className="bg-white text-purple-700 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
+                          className="bg-white text-purple-900 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
                           onClick={() => window.location.href = '/'}
                         >
                           Retour à l&apos;accueil
@@ -583,7 +524,7 @@ export default function BookingClient() {
                           </button>
                           
                           <button 
-                            className="bg-white text-purple-700 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
+                            className="bg-white text-purple-900 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition-colors"
                             onClick={resetBooking}
                           >
                             Recommencer

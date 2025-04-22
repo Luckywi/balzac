@@ -105,7 +105,7 @@ export default function ServiceSelection({ onServiceSelected, selectedServiceId 
       {selectedService && (
         <div className="text-center mt-6">
           <button
-            className="bg-white text-purple-700 font-semibold py-3 px-8 rounded-full shadow hover:bg-gray-100 transition"
+            className="bg-white text-purple-900 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition"
             onClick={handleContinue}
           >
             Continuer

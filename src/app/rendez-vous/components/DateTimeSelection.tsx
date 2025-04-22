@@ -163,13 +163,16 @@ export default function DateTimeSelection({
 
   return (
     <div className="w-full">
-      <div className="mb-5">
-        <button onClick={onBack} className="flex items-center text-sm text-white/70 hover:text-white transition-colors">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
-            <polyline points="15 18 9 12 15 6"></polyline>
-          </svg>
-          Modifier le service
-        </button>
+      <div className="mb-5 flex justify-center">
+      <button 
+  onClick={onBack} 
+  className="flex items-center justify-center gap-1 text-sm text-white/70 hover:text-white transition-colors"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="15 18 9 12 15 6"></polyline>
+  </svg>
+  Modifier le service
+</button>
       </div>
 
       <div className="bg-white/10 rounded-lg p-4 mb-4">
@@ -222,7 +225,7 @@ export default function DateTimeSelection({
                     <div className="grid grid-cols-3 gap-2 p-2">
                       {visibleSlots.length > 0 ? (
                         visibleSlots.map((time) => (
-                          <button key={time} className={`p-3 rounded-lg text-center text-sm transition-colors ${selectedTime === time ? 'bg-white text-purple-700 font-medium shadow-md' : 'bg-white/10 hover:bg-white/20 text-white'}`} onClick={() => handleTimeSelect(time)}>
+                          <button key={time} className={`p-3 rounded-lg text-center text-sm transition-colors ${selectedTime === time ? 'bg-white text-purple-900 font-medium shadow-md' : 'bg-white/10 hover:bg-white/20 text-white'}`} onClick={() => handleTimeSelect(time)}>
                             {time}
                           </button>
                         ))
@@ -250,7 +253,7 @@ export default function DateTimeSelection({
 
       {selectedTime && selectedDate && (
         <div className="mt-6 text-center">
-          <button className="bg-white text-purple-700 font-semibold py-3 px-8 rounded-full shadow hover:bg-gray-100 transition" onClick={handleContinue}>
+          <button className="bg-white text-purple-900 font-semibold py-3 px-8 rounded-lg shadow hover:bg-gray-100 transition" onClick={handleContinue}>
             Continuer
           </button>
         </div>

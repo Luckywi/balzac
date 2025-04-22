@@ -201,7 +201,7 @@ export default function StaffSelect({
                       {staff.name || `${staff.id}`}
                     </div>
                     {staff.role && (
-                      <div className="text-xs text-purple-700">{staff.role}</div>
+                      <div className="text-xs text-purple-900">{staff.role}</div>
                     )}
                   </div>
                 </div>

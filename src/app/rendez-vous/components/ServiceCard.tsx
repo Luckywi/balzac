@@ -10,66 +10,56 @@ interface ServiceCardProps {
 }
 
 export default function ServiceCard({ service, selected, onClick }: ServiceCardProps) {
-  // Calculer le prix à afficher - original ou remisé
   const displayPrice = service.discountedPrice !== null ? service.discountedPrice : service.originalPrice;
-  
-  // Convertir la durée en format lisible (ex: 30min)
   const formattedDuration = `${service.duration}min`;
-  
+
   return (
     <motion.div
-      className={`mb-3 p-4 rounded-lg cursor-pointer transition-all ${
+      className={`relative mb-4 p-4 rounded-2xl cursor-pointer transition-all border ${
         selected 
-          ? 'bg-white text-purple-700 shadow-md' 
-          : 'bg-white/10 text-white hover:bg-white/20'
+          ? 'bg-white text-purple-900 shadow-md border-purple-300' 
+          : 'bg-white/10 text-white hover:bg-white/20 border-white/10'
       }`}
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       onClick={onClick}
       layout
     >
-      <div className="flex justify-between items-center">
-        <div className="flex-1">
-          <h3 className="font-medium">{service.title}</h3>
-          
-          {/* Description */}
-          {service.description && (
-            <p className={`text-xs mt-1 ${selected ? 'text-purple-700/70' : 'text-white/70'}`}>
-              {service.description}
-            </p>
+      {/* Tag réduction en haut à droite */}
+      {service.discount && (
+ <div
+ aria-label={`Réduction de ${service.discount}%`}
+ className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] font-extrabold w-8 h-8 flex items-center justify-center rounded-full shadow-md z-10 leading-none"
+>
+ {service.discount}%
+</div>
+)}
+
+
+      {/* Titre et description */}
+      <div>
+        <h3 className="text-base font-semibold">{service.title}</h3>
+        {service.description && (
+          <p className={`text-xs mt-1 ${selected ? 'text-purple-900' : 'text-white/70'}`}>
+            {service.description}
+          </p>
+        )}
+      </div>
+
+      {/* Prix et durée */}
+      <div className="mt-4 flex items-end justify-between">
+        {/* Bloc prix */}
+        <div className="flex">
+          {service.discountedPrice !== null && (
+            <span className="text-md line-through opacity-60 mr-2">{service.originalPrice}€</span>
           )}
+          <span className="text-md font-bold">{displayPrice}€</span>
         </div>
-        
-        <div className="flex flex-col items-end">
-          {/* Prix */}
-          <div className="flex items-center">
-            {/* Badge de réduction si applicable */}
-            {service.discount && (
-              <span className="text-xs font-bold bg-red-500 text-white px-2 py-0.5 rounded mr-2">
-                {service.discount}%
-              </span>
-            )}
-            
-            <div className="flex flex-col items-end">
-              {/* Afficher le prix barré si remisé */}
-              {service.discountedPrice !== null && (
-                <span className="text-xs line-through opacity-70">
-                  {service.originalPrice}€
-                </span>
-              )}
-              
-              {/* Prix actuel */}
-              <span className="font-bold">
-                {displayPrice}€
-              </span>
-            </div>
-          </div>
-          
-          {/* Durée */}
-          <span className={`text-xs mt-1 ${selected ? 'text-purple-700/70' : 'text-white/60'}`}>
-            {formattedDuration}
-          </span>
-        </div>
+
+        {/* Durée */}
+        <span className={`text-sm font-medium ${selected ? 'text-purple-900' : 'text-white/60'}`}>
+          {formattedDuration}
+        </span>
       </div>
     </motion.div>
   );
