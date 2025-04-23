@@ -92,8 +92,8 @@ export default function PaymentForm({
 
   // Initialiser PaymentRequest (Apple Pay / Google Pay)
   useEffect(() => {
-    if (!stripe) return;
-
+    if (!stripe || !clientSecret) return;
+  
     const pr = stripe.paymentRequest({
       country: 'FR',
       currency: 'eur',
@@ -105,14 +105,42 @@ export default function PaymentForm({
       requestPayerEmail: true,
       requestPayerPhone: true,
     });
-
+  
+    // Vérifier si Apple Pay ou Google Pay est disponible
     pr.canMakePayment().then(result => {
       if (result) {
         setPaymentRequest(pr);
         setCanMakePayment(true);
       }
     });
-  }, [stripe, amount, serviceTitle]);
+  
+    // Gérer le paiement avec Apple Pay / Google Pay
+    pr.on('paymentmethod', async (ev) => {
+      if (!stripe || !clientSecret) {
+        ev.complete('fail');
+        return;
+      }
+  
+      const { error: confirmError, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: ev.paymentMethod.id,
+      });
+  
+      if (confirmError) {
+        console.error('Erreur Stripe Apple Pay:', confirmError);
+        ev.complete('fail');
+        setError(confirmError.message || 'Erreur Apple Pay');
+        onPaymentError(confirmError.message || 'Erreur Apple Pay');
+      } else if (paymentIntent && paymentIntent.status === 'succeeded') {
+        ev.complete('success');
+        onPaymentSuccess(paymentIntent.id);
+      } else {
+        ev.complete('fail');
+        setError('Le paiement n’a pas pu être confirmé');
+        onPaymentError('Le paiement n’a pas pu être confirmé');
+      }
+    });
+  }, [stripe, clientSecret, amount, serviceTitle, onPaymentError, onPaymentSuccess]);
+  
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
