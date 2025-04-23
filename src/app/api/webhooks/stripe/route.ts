@@ -66,7 +66,7 @@ export async function POST(request: Request) {
               end: paymentIntent.metadata.endTime,
               clientName: paymentIntent.metadata.clientName,
               clientPhone: paymentIntent.metadata.clientPhone,
-              clientEmail: paymentIntent.metadata.clientEmail || undefined,
+              clientEmail: paymentIntent.metadata.clientEmail?.trim() || null,
               price: paymentIntent.amount / 100, // Convertir les centimes en euros
               paymentIntentId: paymentIntent.id,
               paymentStatus: 'completed',

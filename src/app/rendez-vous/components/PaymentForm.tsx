@@ -23,7 +23,7 @@ interface PaymentFormProps {
   endTime: string;
   clientName: string;
   clientPhone: string;
-  clientEmail?: string;
+  clientEmail?: string | null;
   onPaymentSuccess: (paymentIntentId: string) => void;
   onPaymentError: (error: string) => void;
 }

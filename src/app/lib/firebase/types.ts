@@ -15,7 +15,7 @@ export interface Rdv {
   end: string;   // ISO date string
   notes?: string;
   clientName: string;
-  clientEmail?: string;
+  clientEmail?: string | null;
   clientPhone?: string;
   price: number;
   source?: string; // 'admin' ou 'client'
