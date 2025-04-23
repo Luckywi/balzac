@@ -1,5 +1,8 @@
-import ClientWrapper from './ClientWrapper'
+import ClientConfirmation from "./ClientConfirmation"
 
-export default function Page({ params }: { params: { id: string } }) {
-  return <ClientWrapper id={params.id} />
+type Params = { id: string }
+
+export default async function Page({ params }: { params: Promise<Params> }) {
+  const { id } = await params
+  return <ClientConfirmation id={id} />
 }
