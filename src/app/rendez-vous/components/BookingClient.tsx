@@ -121,7 +121,7 @@ export default function BookingClient() {
             console.log("Le paiement a été confirmé par le webhook!", data);
             setWebhookStatus('succeeded');
             setBookingId(data.bookingId);
-            return true;
+            return data.bookingId;
           } else if (data.status === 'failed') {
             console.log("Le paiement a échoué selon le webhook", data);
             setWebhookStatus('failed');
@@ -212,30 +212,56 @@ export default function BookingClient() {
   // Gestion du succès du paiement
   const handlePaymentSuccess = async (paymentIntentId: string) => {
     try {
-      // Stocker l'ID du paiement
+      // Stocker l'ID du paiement (utile pour debug ou suivi)
       setPaymentIntentId(paymentIntentId);
-      console.log("Paiement réussi, ID:", paymentIntentId);
-      
-      // Passer à l'étape de traitement pour attendre la confirmation du webhook
+      console.log("✅ Paiement réussi, ID:", paymentIntentId);
+  
+      // Passer à l'étape "processing"
       setCurrentStep('processing');
       setWebhookStatus('pending');
-      
-      // Vérifier périodiquement le statut du paiement via le webhook
-      const isConfirmed = await checkPaymentStatus(paymentIntentId);
-      
-      // Si le paiement est confirmé, passer à l'étape de confirmation
-      if (isConfirmed) {
+  
+      // Attendre la confirmation du webhook + récupérer le bookingId
+      const bookingId = await checkPaymentStatus(paymentIntentId);
+  
+      // Vérification : est-ce qu'on a bien un bookingId ?
+      if (bookingId) {
+        console.log("🎯 Booking ID confirmé :", bookingId);
+        setBookingId(bookingId); // aussi utile pour affichage ou suivi
         setCurrentStep('confirmation');
+  
+        // Envoi du SMS de confirmation
+        try {
+          const res = await fetch('/api/sms', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ appointmentId: bookingId }),
+          });
+  
+          if (res.ok) {
+            console.log('✅ SMS de confirmation envoyé avec succès');
+          } else {
+            const error = await res.json();
+            console.error('❌ Erreur lors de l’envoi du SMS :', error);
+          }
+        } catch (err) {
+          console.error('❌ Exception lors de l’envoi du SMS :', err);
+        }
+  
       } else {
-        // Sinon, afficher l'erreur
+        // Cas d'erreur : pas de bookingId => ne pas rester sur confirmation
+        console.warn('⚠️ Le webhook a confirmé le paiement mais aucun bookingId n’a été renvoyé');
         setCurrentStep('error');
+        setPaymentError("Une erreur est survenue après le paiement. Veuillez nous contacter.");
       }
     } catch (error) {
-      console.error("Erreur lors de la gestion du paiement:", error);
-      setPaymentError(error instanceof Error ? error.message : "Erreur lors du traitement du paiement");
+      console.error("❌ Erreur lors de la gestion du paiement :", error);
+      setPaymentError(error instanceof Error ? error.message : "Erreur inconnue après paiement");
       setCurrentStep('error');
     }
   };
+  
 
   // Gestion des erreurs de paiement
   const handlePaymentError = (error: string) => {
