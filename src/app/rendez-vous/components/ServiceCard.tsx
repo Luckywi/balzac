@@ -53,7 +53,7 @@ export default function ServiceCard({ service, selected, onClick }: ServiceCardP
           {service.discountedPrice !== null && (
             <span className="text-md line-through opacity-60 mr-2">{service.originalPrice}€</span>
           )}
-          <span className="text-md font-bold">{displayPrice}€</span>
+          <span className="text-md font-bold">{displayPrice.toFixed(1)}€</span>
         </div>
 
         {/* Durée */}
