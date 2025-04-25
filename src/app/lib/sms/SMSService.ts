@@ -32,7 +32,7 @@ export class SMSService {
           "parameters": {
             [formattedPhone]: [appointmentDate, appointmentTime, confirmationUrl]
           },
-          "text": `Bonjour, RDV confirmé pour le {appointmentDate} à {appointmentTime}. 3 Rue Balzac, 69150 Décines-Charpieux 0472020056. Gérez ici : {confirmationUrl} · À bientôt !`,
+          "text": `Bonjour, RDV confirme pour le {appointmentDate} à {appointmentTime}. 3 Rue Balzac, 69150 Decines-Charpieux 0472020056. Gerez ici : {confirmationUrl}`,
           "request_id": appointmentId,
           "shorten_URLs": true
         }
